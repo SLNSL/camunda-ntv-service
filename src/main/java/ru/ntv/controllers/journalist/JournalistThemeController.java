@@ -1,4 +1,4 @@
-package ru.ntv.controllers.admin;
+package ru.ntv.controllers.journalist;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +10,9 @@ import ru.ntv.entity.Theme;
 import ru.ntv.service.ThemesService;
 
 @RestController
-@RequestMapping("admin/themes")
+@RequestMapping("themes")
 @Validated
-public class AdminThemeController {
+public class JournalistThemeController {
     
     @Autowired
     private ThemesService themesService;

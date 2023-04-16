@@ -3,6 +3,7 @@ package ru.ntv.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,9 +17,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import ru.ntv.etc.DatabaseRole;
+import ru.ntv.etc.DatabasePrivilege;
 import ru.ntv.security.JwtAuthenticationFilter;
 import ru.ntv.security.JwtAuthenticationPoint;
+
 import java.util.List;
 
 @Configuration
@@ -65,14 +67,18 @@ public class SecurityConfig{
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/auth/**", "/common/**", "/articles/**", "/themes/**")
-                        .permitAll()
-                        .requestMatchers("/admin/**")
-                        .hasAuthority(DatabaseRole.ROLE_ADMIN.name())
-                        .requestMatchers("/user/**")
-                        .hasAuthority(DatabaseRole.ROLE_CLIENT.name())
-                        .requestMatchers("*")
-                        .denyAll()
+                        .requestMatchers("/auth/**").permitAll()
+                        
+                        .requestMatchers(HttpMethod.GET, "/articles/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/articles/**").hasAuthority(DatabasePrivilege.CAN_POST_ARTICLES.name())
+                        .requestMatchers(HttpMethod.PUT, "/articles/**").hasAuthority(DatabasePrivilege.CAN_PUT_ARTICLES.name())
+                        .requestMatchers(HttpMethod.DELETE, "/articles/**").hasAuthority(DatabasePrivilege.CAN_DELETE_ARTICLES.name())
+
+                        .requestMatchers(HttpMethod.GET, "/themes/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/themes/**").hasAuthority(DatabasePrivilege.CAN_POST_THEMES.name())
+                        .requestMatchers(HttpMethod.DELETE, "/themes/**").hasAuthority(DatabasePrivilege.CAN_DELETE_THEMES.name())
+                        
+                        .requestMatchers("*").denyAll()
                 )
                 .build();
     }

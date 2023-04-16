@@ -1,4 +1,4 @@
-package ru.ntv.controllers.admin;
+package ru.ntv.controllers.journalist;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,9 @@ import ru.ntv.exception.ArticleNotFoundException;
 import ru.ntv.service.ArticleService;
 
 @RestController
-@RequestMapping("admin/articles")
+@RequestMapping("articles")
 @Validated
-public class AdminArticleController {
+public class JournalistArticleController {
 
     @Autowired
     private ArticleService articleService;
