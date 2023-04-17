@@ -2,7 +2,7 @@ package ru.ntv.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.ntv.dto.request.admin.CreateThemeRequest;
+import ru.ntv.dto.request.journalist.CreateThemeRequest;
 import ru.ntv.dto.response.common.ThemesResponse;
 import ru.ntv.entity.Article;
 import ru.ntv.entity.Theme;

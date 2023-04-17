@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.ntv.dto.request.admin.NewArticleRequest;
+import ru.ntv.dto.request.journalist.NewArticleRequest;
 import ru.ntv.entity.Article;
 import ru.ntv.exception.ArticleNotFoundException;
 import ru.ntv.service.ArticleService;

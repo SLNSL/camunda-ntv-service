@@ -1,4 +1,4 @@
-package ru.ntv.dto.request.admin;
+package ru.ntv.dto.request.journalist;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

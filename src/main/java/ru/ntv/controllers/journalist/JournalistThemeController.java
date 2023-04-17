@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.ntv.dto.request.admin.CreateThemeRequest;
+import ru.ntv.dto.request.journalist.CreateThemeRequest;
 import ru.ntv.entity.Theme;
 import ru.ntv.service.ThemesService;
 

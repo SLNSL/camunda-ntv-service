@@ -1,4 +1,4 @@
-package ru.ntv.dto.request.admin;
+package ru.ntv.dto.request.journalist;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
