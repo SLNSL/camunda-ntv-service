@@ -1,6 +1,5 @@
 package ru.ntv.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,20 +20,28 @@ import ru.ntv.security.JwtTokenProvider;
 @Service
 public class AuthService {
 
-    @Autowired
+    final
     AuthenticationManager authenticationManager;
 
-    @Autowired
+    final
     JwtTokenProvider jwtUtils;
 
-    @Autowired
+    final
     UserRepository userRepository;
 
-    @Autowired
+    final
     PasswordEncoder encoder;
 
-    @Autowired
+    final
     RoleRepository roleRepository;
+
+    public AuthService(AuthenticationManager authenticationManager, JwtTokenProvider jwtUtils, UserRepository userRepository, PasswordEncoder encoder, RoleRepository roleRepository) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
+        this.userRepository = userRepository;
+        this.encoder = encoder;
+        this.roleRepository = roleRepository;
+    }
 
     public AuthResponse signIn(OldUser user) throws BadCredentialsException {
         Authentication authentication = authenticationManager.authenticate(
