@@ -1,9 +1,8 @@
-package ru.ntv.repo;
+package ru.ntv.repo.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.ntv.entity.Role;
-import ru.ntv.entity.User;
+import ru.ntv.entity.users.User;
 
 import java.util.List;
 import java.util.Optional;

@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ntv.dto.request.journalist.CreateThemeRequest;
 import ru.ntv.dto.response.common.ThemesResponse;
-import ru.ntv.entity.Article;
-import ru.ntv.entity.Theme;
-import ru.ntv.repo.ArticleRepository;
-import ru.ntv.repo.ThemeRepository;
+import ru.ntv.entity.articles.Article;
+import ru.ntv.entity.articles.Theme;
+import ru.ntv.repo.article.ArticleRepository;
+import ru.ntv.repo.article.ThemeRepository;
 
 import java.util.List;
 

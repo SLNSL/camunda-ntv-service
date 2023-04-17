@@ -1,7 +1,6 @@
 package ru.ntv.controllers.common;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -9,8 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.ntv.dto.response.common.ArticleListResponse;
 import ru.ntv.dto.response.common.ArticleResponse;
 import ru.ntv.dto.response.common.ArticlesResponse;
-import ru.ntv.entity.Article;
+import ru.ntv.entity.articles.Article;
 import ru.ntv.service.ArticleService;
+import javax.validation.constraints.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +19,11 @@ import java.util.Optional;
 @Validated
 @RequestMapping("articles")
 public class ArticleController {
-    @Autowired
-    private ArticleService articleService;
+    private final ArticleService articleService;
+
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     @GetMapping(params = "header")
     ResponseEntity<ArticlesResponse> getArticlesByHeader( @RequestParam String header){

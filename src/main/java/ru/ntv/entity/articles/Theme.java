@@ -1,9 +1,11 @@
-package ru.ntv.entity;
+package ru.ntv.entity.articles;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.*;
 
+import lombok.*;
+import ru.ntv.entity.articles.Article;
+
+import javax.persistence.*;
 import java.util.List;
 
 @Entity

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import ru.ntv.dto.request.journalist.NewArticleRequest;
 import ru.ntv.exception.ArticleNotFoundException;
 import ru.ntv.dto.response.common.ArticlesResponse;
-import ru.ntv.entity.Article;
-import ru.ntv.repo.ArticleRepository;
-import ru.ntv.repo.ThemeRepository;
+import ru.ntv.entity.articles.Article;
+import ru.ntv.repo.article.ArticleRepository;
+import ru.ntv.repo.article.ThemeRepository;
 
 import java.util.List;
 import java.util.Optional;

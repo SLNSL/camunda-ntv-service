@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import ru.ntv.dto.request.auth.NewUser;
 import ru.ntv.dto.request.auth.OldUser;
 import ru.ntv.dto.response.auth.AuthResponse;
-import ru.ntv.entity.User;
+import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
-import ru.ntv.repo.RoleRepository;
-import ru.ntv.repo.UserRepository;
+import ru.ntv.repo.user.RoleRepository;
+import ru.ntv.repo.user.UserRepository;
 import ru.ntv.security.JwtTokenProvider;
 
 @Service
@@ -49,7 +49,7 @@ public class AuthService {
         return response;
     }
 
-    public ResponseEntity<AuthResponse> signUp(NewUser newUser){
+    public ResponseEntity<AuthResponse> signUp(NewUser newUser) {
         final var response = new AuthResponse();
         if (userRepository.existsByLogin(newUser.getUsername())) {
             response.setErrorMessage("This login is already taken");

@@ -1,6 +1,7 @@
 package ru.ntv.controllers;
 
-import jakarta.validation.ConstraintViolationException;
+
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,6 +25,4 @@ public class ErrorHandlingController {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
-
 }

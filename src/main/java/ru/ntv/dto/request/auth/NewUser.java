@@ -1,6 +1,6 @@
 package ru.ntv.dto.request.auth;
 
-import jakarta.validation.constraints.Size;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

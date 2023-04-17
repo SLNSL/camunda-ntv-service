@@ -1,8 +1,8 @@
-package ru.ntv.entity;
+package ru.ntv.entity.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.*;
+import javax.persistence.*;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class Role {
 
     @Column(name = "role_name")
     private String roleName;
-
+    
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER) //todo убрать FetchType.EAGER
     @JoinTable(

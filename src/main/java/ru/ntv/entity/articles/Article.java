@@ -1,9 +1,10 @@
-package ru.ntv.entity;
+package ru.ntv.entity.articles;
 
-import jakarta.persistence.*;
+
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
