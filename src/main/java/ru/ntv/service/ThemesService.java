@@ -1,5 +1,6 @@
 package ru.ntv.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ntv.dto.request.journalist.CreateThemeRequest;
 import ru.ntv.dto.response.common.ThemesResponse;
@@ -12,18 +13,15 @@ import java.util.List;
 
 @Service
 public class ThemesService {
-    private final ThemeRepository themeRepository;
+    @Autowired
+    private ThemeRepository themeRepository;
 
-    private final ArticleRepository articleRepository;
-
-    public ThemesService(ThemeRepository themeRepository, ArticleRepository articleRepository) {
-        this.themeRepository = themeRepository;
-        this.articleRepository = articleRepository;
-    }
+    @Autowired
+    ArticleRepository articleRepository;
 
     public ThemesResponse getAllThemes(){
         final var response = new ThemesResponse();
-        response.setThemes((List<Theme>) themeRepository.findAll());
+        response.setThemes(themeRepository.findAll());
 
         return response;
     }

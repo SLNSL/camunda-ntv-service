@@ -15,7 +15,7 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenProvider {
 
-    @Value("77BB8D1285FF9F029850511B3ECC8B0EA3DFFB0987762701471144681C07F4E4")
+    @Value("${app.jwtSecret}")
     private String jwtSecret;
 
     public String generateToken(String login) {

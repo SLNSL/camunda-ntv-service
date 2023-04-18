@@ -3,7 +3,6 @@ package ru.ntv.entity.users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import lombok.*;
-import ru.ntv.entity.users.Role;
 
 @Entity
 @AllArgsConstructor
