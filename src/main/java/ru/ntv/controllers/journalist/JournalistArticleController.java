@@ -1,5 +1,6 @@
 package ru.ntv.controllers.journalist;
 
+import javax.transaction.Transactional;
 import javax.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

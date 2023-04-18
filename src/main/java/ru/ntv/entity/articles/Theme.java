@@ -20,7 +20,7 @@ public class Theme {
     private String themeName;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "article_theme",
             joinColumns = {@JoinColumn(name = "theme_id")},

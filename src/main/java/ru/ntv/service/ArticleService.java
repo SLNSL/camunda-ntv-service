@@ -5,13 +5,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.ntv.dto.request.journalist.NewArticleRequest;
+import ru.ntv.entity.users.User;
+import ru.ntv.etc.DatabaseRole;
 import ru.ntv.exception.ArticleNotFoundException;
 import ru.ntv.dto.response.common.ArticlesResponse;
 import ru.ntv.entity.articles.Article;
 import ru.ntv.repo.article.ArticleRepository;
 import ru.ntv.repo.article.ThemeRepository;
+import ru.ntv.repo.user.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,6 +26,10 @@ public class ArticleService {
 
     @Autowired
     private ThemeRepository themeRepository;
+
+
+    @Autowired
+    private UserRepository userRepository;
 
     public Optional<List<Article>> findByHeader(String header){
         return articleRepository.findAllByHeaderContainingIgnoreCase(header);
@@ -61,6 +69,7 @@ public class ArticleService {
         if (req.getSubheader() != null) article.setSubheader(req.getSubheader());
         if (req.getPhotoURL() != null) article.setPhoto(req.getPhotoURL());
         if (req.getPriority() != null) article.setPriority(req.getPriority());
+        if (req.getJournalistId() != null) article.setPriority(req.getJournalistId());
 
         if (req.getThemeIds() != null) {
             final var themes = themeRepository.findAllById(req.getThemeIds());
@@ -85,7 +94,18 @@ public class ArticleService {
         article.setText(newArticleRequest.getText());
         article.setPriority(newArticleRequest.getPriority());
         article.setPhoto(newArticleRequest.getPhotoURL());
+        article.setJournalistId(newArticleRequest.getJournalistId());
 
         return article;
+    }
+
+
+
+    public List<Article> getArticlesByJournalistId(int id) {
+        var journalist = userRepository.findById(id).get(); //todo throw custom Exception if user is not found
+
+        if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name())) throw new RuntimeException(); //todo throw custom Exception that isn't boss
+
+        return articleRepository.findByJournalistId(journalist.getId());
     }
 }

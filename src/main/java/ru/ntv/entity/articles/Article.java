@@ -3,6 +3,7 @@ package ru.ntv.entity.articles;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.ntv.entity.users.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +21,7 @@ public class Article implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "article_theme",
             joinColumns = {@JoinColumn(name = "article_id")},
@@ -47,4 +48,9 @@ public class Article implements Serializable {
     @Column(name = "creation_date")
     @CreationTimestamp
     private LocalDateTime creationDate;
+
+    @Column(name = "journalist_id")
+    private Integer journalistId;
+
+
 }

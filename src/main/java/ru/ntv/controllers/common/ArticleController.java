@@ -35,6 +35,7 @@ public class ArticleController {
 
     @GetMapping(params = "theme_ids")
     ResponseEntity<ArticleListResponse> getArticlesByThemeIds( @RequestParam List<Integer> theme_ids){
+        theme_ids.forEach(System.out::println);
         final var articles = articleService.getArticlesByThemes(theme_ids);
 
         return ResponseEntity.ok(new ArticleListResponse(articles));
