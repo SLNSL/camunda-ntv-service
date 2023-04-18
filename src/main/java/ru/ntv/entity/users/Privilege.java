@@ -1,9 +1,8 @@
-package ru.ntv.entity;
+package ru.ntv.entity.users;
 
-import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-
+import javax.persistence.*;
 import java.util.List;
 
 @Entity

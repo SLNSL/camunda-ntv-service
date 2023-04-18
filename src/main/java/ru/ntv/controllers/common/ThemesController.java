@@ -11,12 +11,8 @@ import ru.ntv.service.ThemesService;
 @RequestMapping("themes")
 @Validated
 public class ThemesController {
-
-    private final ThemesService themesService;
-
-    public ThemesController(ThemesService themesService) {
-        this.themesService = themesService;
-    }
+    @Autowired
+    private ThemesService themesService;
 
     @GetMapping
     ResponseEntity<ThemesResponse> getAllThemes(){

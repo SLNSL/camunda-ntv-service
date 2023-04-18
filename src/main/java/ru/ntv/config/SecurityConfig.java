@@ -27,13 +27,12 @@ import java.util.List;
 @EnableWebSecurity
 @EnableTransactionManagement
 public class SecurityConfig{
+    
     @Autowired
     private JwtAuthenticationPoint unauthorizedHandler;
-
-    @Bean
-    JwtAuthenticationFilter jwtAuthenticationFilter(){
-        return new JwtAuthenticationFilter();
-    }
+    
+    @Autowired
+    JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -57,7 +56,7 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors()
                 .and()
                 .csrf(AbstractHttpConfigurer::disable)
@@ -68,22 +67,22 @@ public class SecurityConfig{
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/auth/**").permitAll()
+                        .antMatchers("/auth/**").permitAll()
                         
-                        .requestMatchers(HttpMethod.GET, "/articles/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/articles/**").hasAuthority(DatabasePrivilege.CAN_POST_ARTICLES.name())
-                        .requestMatchers(HttpMethod.PUT, "/articles/**").hasAuthority(DatabasePrivilege.CAN_PUT_ARTICLES.name())
-                        .requestMatchers(HttpMethod.DELETE, "/articles/**").hasAuthority(DatabasePrivilege.CAN_DELETE_ARTICLES.name())
+                        .antMatchers(HttpMethod.GET, "/articles/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/articles/**").hasAuthority(DatabasePrivilege.CAN_POST_ARTICLES.name())
+                        .antMatchers(HttpMethod.PUT, "/articles/**").hasAuthority(DatabasePrivilege.CAN_PUT_ARTICLES.name())
+                        .antMatchers(HttpMethod.DELETE, "/articles/**").hasAuthority(DatabasePrivilege.CAN_DELETE_ARTICLES.name())
 
-                        .requestMatchers(HttpMethod.GET, "/themes/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/themes/**").hasAuthority(DatabasePrivilege.CAN_POST_THEMES.name())
-                        .requestMatchers(HttpMethod.DELETE, "/themes/**").hasAuthority(DatabasePrivilege.CAN_DELETE_THEMES.name())
+                        .antMatchers(HttpMethod.GET, "/themes/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/themes/**").hasAuthority(DatabasePrivilege.CAN_POST_THEMES.name())
+                        .antMatchers(HttpMethod.DELETE, "/themes/**").hasAuthority(DatabasePrivilege.CAN_DELETE_THEMES.name())
 
-                        .requestMatchers(HttpMethod.GET, "/journalists/**").hasAuthority(DatabasePrivilege.CAN_GET_JOURNALISTS.name())
-                        .requestMatchers(HttpMethod.POST, "/journalists/**").hasAuthority(DatabasePrivilege.CAN_POST_JOURNALISTS.name())
-                        .requestMatchers(HttpMethod.DELETE, "/journalists/**").hasAuthority(DatabasePrivilege.CAN_DELETE_JOURNALISTS.name())
+                        .antMatchers(HttpMethod.GET, "/journalists/**").hasAuthority(DatabasePrivilege.CAN_GET_JOURNALISTS.name())
+                        .antMatchers(HttpMethod.POST, "/journalists/**").hasAuthority(DatabasePrivilege.CAN_POST_JOURNALISTS.name())
+                        .antMatchers(HttpMethod.DELETE, "/journalists/**").hasAuthority(DatabasePrivilege.CAN_DELETE_JOURNALISTS.name())
                         
-                        .requestMatchers("*").denyAll()
+                        .antMatchers("*").denyAll()
                 )
                 .build();
     }

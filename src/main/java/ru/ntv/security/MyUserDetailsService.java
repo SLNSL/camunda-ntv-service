@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.ntv.entity.users.User;
 import ru.ntv.repo.user.UserRepository;
-import java.util.Collections;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {

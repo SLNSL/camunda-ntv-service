@@ -1,7 +1,5 @@
 package ru.ntv.dto.request.journalist;
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

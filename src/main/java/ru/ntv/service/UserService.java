@@ -3,10 +3,10 @@ package ru.ntv.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ntv.dto.response.boss.JournalistResponse;
-import ru.ntv.entity.User;
+import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
-import ru.ntv.repo.RoleRepository;
-import ru.ntv.repo.UserRepository;
+import ru.ntv.repo.user.RoleRepository;
+import ru.ntv.repo.user.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
