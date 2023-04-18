@@ -1,10 +1,10 @@
 package ru.ntv.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.ntv.dto.request.admin.NewArticleRequest;
-import ru.ntv.entity.articles.Theme;
+import ru.ntv.dto.request.journalist.NewArticleRequest;
 import ru.ntv.exception.ArticleNotFoundException;
 import ru.ntv.dto.response.common.ArticlesResponse;
 import ru.ntv.entity.articles.Article;
@@ -17,14 +17,11 @@ import java.util.Optional;
 @Service
 public class ArticleService {
 
-    private final ArticleRepository articleRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
-    private final ThemeRepository themeRepository;
-
-    public ArticleService(ArticleRepository articleRepository, ThemeRepository themeRepository) {
-        this.articleRepository = articleRepository;
-        this.themeRepository = themeRepository;
-    }
+    @Autowired
+    private ThemeRepository themeRepository;
 
     public Optional<List<Article>> findByHeader(String header){
         return articleRepository.findAllByHeaderContainingIgnoreCase(header);
@@ -67,7 +64,7 @@ public class ArticleService {
 
         if (req.getThemeIds() != null) {
             final var themes = themeRepository.findAllById(req.getThemeIds());
-            article.setThemes((List<Theme>) themes);
+            article.setThemes(themes);
         }
 
         return articleRepository.save(article);

@@ -1,25 +1,21 @@
-package ru.ntv.controllers.admin;
-
+package ru.ntv.controllers.journalist;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.ntv.dto.request.admin.CreateThemeRequest;
+import ru.ntv.dto.request.journalist.CreateThemeRequest;
 import ru.ntv.entity.articles.Theme;
 import ru.ntv.service.ThemesService;
 import javax.validation.*;
 
 @RestController
-@RequestMapping("admin/themes")
+@RequestMapping("themes")
 @Validated
-public class AdminThemeController {
+public class JournalistThemeController {
     
-    private final ThemesService themesService;
-
-    public AdminThemeController(ThemesService themesService) {
-        this.themesService = themesService;
-    }
+    @Autowired
+    private ThemesService themesService;
 
     @PostMapping()
     ResponseEntity<Theme> create(@Valid @RequestBody CreateThemeRequest req){

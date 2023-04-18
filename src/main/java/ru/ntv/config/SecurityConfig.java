@@ -3,7 +3,7 @@ package ru.ntv.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import ru.ntv.etc.DatabaseRole;
+import ru.ntv.etc.DatabasePrivilege;
 import ru.ntv.security.JwtAuthenticationFilter;
 import ru.ntv.security.JwtAuthenticationPoint;
 import java.util.List;
@@ -27,14 +27,12 @@ import java.util.List;
 @EnableWebSecurity
 @EnableTransactionManagement
 public class SecurityConfig{
-    private final JwtAuthenticationPoint unauthorizedHandler;
-    private final JwtAuthenticationFilter authenticationFilter;
-
-    public SecurityConfig(JwtAuthenticationPoint unauthorizedHandler, JwtAuthenticationFilter authenticationFilter) {
-        this.unauthorizedHandler = unauthorizedHandler;
-        this.authenticationFilter =authenticationFilter;
-    }
-
+    
+    @Autowired
+    private JwtAuthenticationPoint unauthorizedHandler;
+    
+    @Autowired
+    JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -58,7 +56,7 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors()
                 .and()
                 .csrf(AbstractHttpConfigurer::disable)
@@ -68,16 +66,24 @@ public class SecurityConfig{
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/auth/**", "/common/**", "/articles/**", "/themes/**")
-//                        .permitAll()
-//                        .requestMatchers("/admin/**")
-//                        .hasAuthority(DatabaseRole.ROLE_ADMIN.name())
-//                        .requestMatchers("/user/**")
-//                        .hasAuthority(DatabaseRole.ROLE_CLIENT.name())
-//                        .requestMatchers("*")
-//                        .denyAll()
-//                )
+                .authorizeHttpRequests((auth) -> auth
+                        .antMatchers("/auth/**").permitAll()
+                        
+                        .antMatchers(HttpMethod.GET, "/articles/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/articles/**").hasAuthority(DatabasePrivilege.CAN_POST_ARTICLES.name())
+                        .antMatchers(HttpMethod.PUT, "/articles/**").hasAuthority(DatabasePrivilege.CAN_PUT_ARTICLES.name())
+                        .antMatchers(HttpMethod.DELETE, "/articles/**").hasAuthority(DatabasePrivilege.CAN_DELETE_ARTICLES.name())
+
+                        .antMatchers(HttpMethod.GET, "/themes/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/themes/**").hasAuthority(DatabasePrivilege.CAN_POST_THEMES.name())
+                        .antMatchers(HttpMethod.DELETE, "/themes/**").hasAuthority(DatabasePrivilege.CAN_DELETE_THEMES.name())
+
+                        .antMatchers(HttpMethod.GET, "/journalists/**").hasAuthority(DatabasePrivilege.CAN_GET_JOURNALISTS.name())
+                        .antMatchers(HttpMethod.POST, "/journalists/**").hasAuthority(DatabasePrivilege.CAN_POST_JOURNALISTS.name())
+                        .antMatchers(HttpMethod.DELETE, "/journalists/**").hasAuthority(DatabasePrivilege.CAN_DELETE_JOURNALISTS.name())
+                        
+                        .antMatchers("*").denyAll()
+                )
                 .build();
     }
 }

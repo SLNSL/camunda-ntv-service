@@ -1,7 +1,7 @@
 package ru.ntv.service;
 
 import org.springframework.stereotype.Service;
-import ru.ntv.dto.request.admin.CreateThemeRequest;
+import ru.ntv.dto.request.journalist.CreateThemeRequest;
 import ru.ntv.dto.response.common.ThemesResponse;
 import ru.ntv.entity.articles.Article;
 import ru.ntv.entity.articles.Theme;

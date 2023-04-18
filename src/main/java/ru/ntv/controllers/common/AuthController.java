@@ -1,6 +1,7 @@
 package ru.ntv.controllers.common;
 
 import javax.validation.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,12 +16,8 @@ import ru.ntv.service.AuthService;
 @RequestMapping("auth")
 @Validated
 public class AuthController {
-    final
+    @Autowired
     AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("sign-in")
     ResponseEntity<AuthResponse> signIn(@Valid @RequestBody OldUser user) throws BadCredentialsException {

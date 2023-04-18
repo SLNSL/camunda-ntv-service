@@ -1,8 +1,9 @@
 package ru.ntv.entity.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -18,4 +19,13 @@ public class Role {
 
     @Column(name = "role_name")
     private String roleName;
+    
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER) //todo убрать FetchType.EAGER
+    @JoinTable(
+            name = "role_privilege",
+            joinColumns = {@JoinColumn(name = "role_id")},
+            inverseJoinColumns = {@JoinColumn(name = "privilege_id")}
+    )
+    private List<Privilege> privileges;
 }

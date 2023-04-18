@@ -23,7 +23,6 @@ import java.util.Map;
         basePackages = {"ru.ntv.repo.user"}
 )
 public class MyUserDataSourceConfiguration {
-
     public Map<String, String> myUserJpaProperties() {
         Map<String, String> MyUserJpaProperties = new HashMap<>();
         MyUserJpaProperties.put("hibernate.hbm2ddl.auto", "update");
@@ -34,16 +33,14 @@ public class MyUserDataSourceConfiguration {
         MyUserJpaProperties.put("javax.persistence.transactionType", "JTA");
         return MyUserJpaProperties;
     }
-
-
+    
     @Bean(name = "myUserEntityManagerFactoryBuilder")
     public EntityManagerFactoryBuilder myUserEntityManagerFactoryBuilder() {
         return new EntityManagerFactoryBuilder(
                 new HibernateJpaVendorAdapter(), myUserJpaProperties(), null
         );
     }
-
-
+    
     @Bean(name = "MyUserDataSourceConfiguration")
     public LocalContainerEntityManagerFactoryBean myUserEntityManager(
             @Qualifier("myUserEntityManagerFactoryBuilder") EntityManagerFactoryBuilder MyUserEntityManagerFactoryBuilder,
@@ -57,18 +54,15 @@ public class MyUserDataSourceConfiguration {
                 .jta(true)
                 .build();
     }
-
-
+    
     @Bean("myUserDataSourceProperties")
     @ConfigurationProperties("spring.datasource.users")
     public DataSourceProperties myUserDataSourceProperties() {
         return new DataSourceProperties();
     }
-
-
+    
     @Bean("myUserDataSource")
     public DataSource MyUserDataSource(@Qualifier("myUserDataSourceProperties") DataSourceProperties MyUserDataSourceProperties) {
-        // return MyUserDataSourceProperties.initializeDataSourceBuilder().build();
         PGXADataSource ds = new PGXADataSource();
         ds.setUrl(MyUserDataSourceProperties.getUrl());
         ds.setUser(MyUserDataSourceProperties.getUsername());
@@ -79,10 +73,4 @@ public class MyUserDataSourceConfiguration {
         xaDataSource.setUniqueResourceName("xa_MyUser");
         return xaDataSource;
     }
-
-
-
-
-
-
 }

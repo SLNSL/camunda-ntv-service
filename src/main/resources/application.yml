@@ -1,4 +1,9 @@
-
+server:
+  port: 21413
+  servlet:
+    context-path: /
+    session:
+      timeout: 600s
 
 spring:
   datasource:
@@ -12,8 +17,6 @@ spring:
       username: postgres
       password: postgres
       driver-class-name: org.postgresql.Driver
-
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,7 +24,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
   mvc:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
@@ -33,12 +35,10 @@ management:
         include: health,info,mappings
 
 app:
-  jwtSecret: 77BB8D1285FF9F029850511B3ECC8B0EA3DFFB0987762701471144681C07F4E4
+  jwtSecret: 77BB8D1285FF9F029850511B3ECC8B0EA3DFFB0987762701471144681C07F4E4B8D1285FF9F029850511B3DFFB0987762701471144
 
 logging:
   level:
     org:
       springframework:
         security: DEBUG
-
-

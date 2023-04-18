@@ -77,8 +77,4 @@ public class ArticleDataSourceConfiguration {
         xaDataSource.setUniqueResourceName("xa_article");
         return xaDataSource;
     }
-
-
-
-
 }

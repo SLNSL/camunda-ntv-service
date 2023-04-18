@@ -14,6 +14,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
+import ru.ntv.atomikos.AtomikosJtaPlatform;
 
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
@@ -44,7 +45,7 @@ public class AtomikosConfiguration {
     }
 
     @Bean(name = "atomikosTransactionManager")
-    public TransactionManager atomikosTransactionManager() throws Throwable {
+    public TransactionManager atomikosTransactionManager() {
         UserTransactionManager userTransactionManager = new UserTransactionManager();
         userTransactionManager.setForceShutdown(false);
 

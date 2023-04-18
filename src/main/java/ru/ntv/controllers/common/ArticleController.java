@@ -19,11 +19,9 @@ import java.util.Optional;
 @Validated
 @RequestMapping("articles")
 public class ArticleController {
-    private final ArticleService articleService;
-
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
+    
+    @Autowired
+    private ArticleService articleService;
 
     @GetMapping(params = "header")
     ResponseEntity<ArticlesResponse> getArticlesByHeader( @RequestParam String header){
