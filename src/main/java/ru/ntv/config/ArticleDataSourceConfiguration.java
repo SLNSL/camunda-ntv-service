@@ -74,7 +74,7 @@ public class ArticleDataSourceConfiguration {
 
         AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
         xaDataSource.setXaDataSource(ds);
-        xaDataSource.setUniqueResourceName("xa_article");
+        xaDataSource.setUniqueResourceName("xa_articles");
         return xaDataSource;
     }
 }

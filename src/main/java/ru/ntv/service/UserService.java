@@ -36,13 +36,6 @@ public class UserService {
     @Transactional(transactionManager = "transactionManager")
     public String retireJournalist(int idJournalist) throws NotRightRoleException{
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-        final var boss = userRepository.findByLogin(userName).orElseThrow(); //todo throw custom Exception if user is not found
-
-        if (!Objects.equals(boss.getRole().getRoleName(), DatabaseRole.ROLE_BOSS.name())) throw new NotRightRoleException("Это не босс"); //todo throw custom Exception that isn't boss
-
-
         final var journalist = userRepository.findById(idJournalist).orElseThrow(); //todo throw custom Exception if user is not found
         System.out.println(journalist.getLogin() + " " + journalist.getId() + " " + journalist.getRole().getRoleName());
         if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name())) throw new NotRightRoleException("Это не журналист"); //todo throw custom Exception that isn't journalist
@@ -54,16 +47,16 @@ public class UserService {
         );
 
 
-        List<Article> articles = articleRepository.findByJournalistName(journalist.getLogin());
+        List<Article> articles = articleRepository.findAllByJournalistName(journalist.getLogin());
 
         articles.forEach(e -> System.out.println(e.getJournalistName()));
-//        articles.forEach( a -> a.setJournalistName(null));
+        articles.forEach( a -> a.setJournalistName(null));
 
 
         userRepository.save(journalist);
-//        articleRepository.saveAll(articles);
+        articleRepository.saveAll(articles);
 
-        return userName;
+        return "уволен";
 
 
     }

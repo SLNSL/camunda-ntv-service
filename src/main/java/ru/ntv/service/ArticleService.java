@@ -110,6 +110,6 @@ public class ArticleService {
 
         if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name())) throw new RuntimeException(); //todo throw custom Exception that isn't boss
 
-        return articleRepository.findByJournalistName(journalist.getLogin());
+        return articleRepository.findAllByJournalistName(journalist.getLogin());
     }
 }

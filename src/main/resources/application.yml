@@ -7,15 +7,15 @@ server:
 
 spring:
   datasource:
-    users:
-      url: jdbc:postgresql://localhost:6000/studs
-      username: s313083
-      password: qZTAZnu9jQZoIVVj
+    people:
+      url: jdbc:postgresql://localhost:5432/users
+      username: postgres
+      password: nnik1320
       driver-class-name: org.postgresql.Driver
     articles:
-      url: jdbc:postgresql://localhost:5431/blps
+      url: jdbc:postgresql://localhost:5432/news
       username: postgres
-      password: postgres
+      password: nnik1320
       driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

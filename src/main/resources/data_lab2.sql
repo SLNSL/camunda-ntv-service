@@ -1,4 +1,4 @@
-INSERT INTO "role" (role_name)
+INSERT INTO "role" (name)
 VALUES ('ROLE_BOSS');
 
 create table "privilege"
@@ -34,4 +34,4 @@ VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7),
        (2, 1), (2, 5),
        (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9), (3, 10);
        
-UPDATE "role" SET role_name = 'ROLE_JOURNALIST' WHERE id = 1;
+UPDATE "role" SET name = 'ROLE_JOURNALIST' WHERE id = 1;

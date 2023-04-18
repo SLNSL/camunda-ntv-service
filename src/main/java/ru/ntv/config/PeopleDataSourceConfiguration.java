@@ -18,12 +18,12 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "MyUserDataSourceConfiguration",
+        entityManagerFactoryRef = "PeopleDataSourceConfiguration",
         transactionManagerRef = "transactionManager",
         basePackages = {"ru.ntv.repo.user"}
 )
-public class MyUserDataSourceConfiguration {
-    public Map<String, String> myUserJpaProperties() {
+public class PeopleDataSourceConfiguration {
+    public Map<String, String> peopleJpaProperties() {
         Map<String, String> MyUserJpaProperties = new HashMap<>();
         MyUserJpaProperties.put("hibernate.hbm2ddl.auto", "update");
         MyUserJpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
@@ -33,36 +33,36 @@ public class MyUserDataSourceConfiguration {
         MyUserJpaProperties.put("javax.persistence.transactionType", "JTA");
         return MyUserJpaProperties;
     }
-    
-    @Bean(name = "myUserEntityManagerFactoryBuilder")
-    public EntityManagerFactoryBuilder myUserEntityManagerFactoryBuilder() {
+
+    @Bean(name = "peopleEntityManagerFactoryBuilder")
+    public EntityManagerFactoryBuilder peopleEntityManagerFactoryBuilder() {
         return new EntityManagerFactoryBuilder(
-                new HibernateJpaVendorAdapter(), myUserJpaProperties(), null
+                new HibernateJpaVendorAdapter(), peopleJpaProperties(), null
         );
     }
-    
-    @Bean(name = "MyUserDataSourceConfiguration")
-    public LocalContainerEntityManagerFactoryBean myUserEntityManager(
-            @Qualifier("myUserEntityManagerFactoryBuilder") EntityManagerFactoryBuilder MyUserEntityManagerFactoryBuilder,
-            @Qualifier("myUserDataSource") DataSource postgresDataSource
+
+    @Bean(name = "PeopleDataSourceConfiguration")
+    public LocalContainerEntityManagerFactoryBean peopleEntityManager(
+            @Qualifier("peopleEntityManagerFactoryBuilder") EntityManagerFactoryBuilder MyUserEntityManagerFactoryBuilder,
+            @Qualifier("peopleDataSource") DataSource postgresDataSource
     ) {
         return MyUserEntityManagerFactoryBuilder
                 .dataSource(postgresDataSource)
                 .packages("ru.ntv.entity.users")
                 .persistenceUnit("postgres")
-                .properties(myUserJpaProperties())
+                .properties(peopleJpaProperties())
                 .jta(true)
                 .build();
     }
-    
-    @Bean("myUserDataSourceProperties")
-    @ConfigurationProperties("spring.datasource.users")
-    public DataSourceProperties myUserDataSourceProperties() {
+
+    @Bean("peopleDataSourceProperties")
+    @ConfigurationProperties("spring.datasource.people")
+    public DataSourceProperties peopleDataSourceProperties() {
         return new DataSourceProperties();
     }
-    
-    @Bean("myUserDataSource")
-    public DataSource MyUserDataSource(@Qualifier("myUserDataSourceProperties") DataSourceProperties MyUserDataSourceProperties) {
+
+    @Bean("peopleDataSource")
+    public DataSource peopleDataSource(@Qualifier("peopleDataSourceProperties") DataSourceProperties MyUserDataSourceProperties) {
         PGXADataSource ds = new PGXADataSource();
         ds.setUrl(MyUserDataSourceProperties.getUrl());
         ds.setUser(MyUserDataSourceProperties.getUsername());
@@ -70,7 +70,7 @@ public class MyUserDataSourceConfiguration {
 
         AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
         xaDataSource.setXaDataSource(ds);
-        xaDataSource.setUniqueResourceName("xa_MyUser");
+        xaDataSource.setUniqueResourceName("xa_people");
         return xaDataSource;
     }
 }
