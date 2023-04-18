@@ -1,15 +1,21 @@
 package ru.ntv.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.response.boss.JournalistResponse;
 import ru.ntv.entity.articles.Article;
 import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
+import ru.ntv.exception.NotRightRoleException;
 import ru.ntv.repo.article.ArticleRepository;
 import ru.ntv.repo.user.RoleRepository;
 import ru.ntv.repo.user.UserRepository;
 
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -27,28 +33,40 @@ public class UserService {
     ArticleRepository articleRepository;
 
 
+    @Transactional(transactionManager = "transactionManager")
+    public String retireJournalist(int idJournalist) throws NotRightRoleException{
 
-//    public void retireJournalist(int idBoss, int idJournalist){
-//
-//        final var boss = userRepository.findById(idBoss).get(); //todo throw custom Exception if user is not found
-//        if (!Objects.equals(boss.getRole().getRoleName(), DatabaseRole.ROLE_BOSS.name())) throw new RuntimeException(); //todo throw custom Exception that isn't boss
-//
-//
-//        final var user = userRepository.findById(idJournalist).get(); //todo throw custom Exception if user is not found
-//        if (!Objects.equals(user.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name())) throw new RuntimeException(); //todo throw custom Exception that isn't journalist
-//
-//        user.setRole(
-//                roleRepository.findRoleByRoleName(
-//                        DatabaseRole.ROLE_CLIENT.name()
-//                )
-//        );
-//        userRepository.save(user);
-//
-//        List<Article> articles = articleRepository.findAllB
-//
-//
-//
-//    }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        final var boss = userRepository.findByLogin(userName).orElseThrow(); //todo throw custom Exception if user is not found
+
+        if (!Objects.equals(boss.getRole().getRoleName(), DatabaseRole.ROLE_BOSS.name())) throw new NotRightRoleException("Это не босс"); //todo throw custom Exception that isn't boss
+
+
+        final var journalist = userRepository.findById(idJournalist).orElseThrow(); //todo throw custom Exception if user is not found
+        System.out.println(journalist.getLogin() + " " + journalist.getId() + " " + journalist.getRole().getRoleName());
+        if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name())) throw new NotRightRoleException("Это не журналист"); //todo throw custom Exception that isn't journalist
+
+        journalist.setRole(
+                roleRepository.findRoleByRoleName(
+                        DatabaseRole.ROLE_CLIENT.name()
+                )
+        );
+
+
+        List<Article> articles = articleRepository.findByJournalistName(journalist.getLogin());
+
+        articles.forEach(e -> System.out.println(e.getJournalistName()));
+//        articles.forEach( a -> a.setJournalistName(null));
+
+
+        userRepository.save(journalist);
+//        articleRepository.saveAll(articles);
+
+        return userName;
+
+
+    }
 
 
     public JournalistResponse getJournalistById(int id) {

@@ -3,6 +3,8 @@ package ru.ntv.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.ntv.dto.request.journalist.NewArticleRequest;
 import ru.ntv.entity.users.User;
@@ -69,7 +71,6 @@ public class ArticleService {
         if (req.getSubheader() != null) article.setSubheader(req.getSubheader());
         if (req.getPhotoURL() != null) article.setPhoto(req.getPhotoURL());
         if (req.getPriority() != null) article.setPriority(req.getPriority());
-        if (req.getJournalistId() != null) article.setPriority(req.getJournalistId());
 
         if (req.getThemeIds() != null) {
             final var themes = themeRepository.findAllById(req.getThemeIds());
@@ -94,18 +95,21 @@ public class ArticleService {
         article.setText(newArticleRequest.getText());
         article.setPriority(newArticleRequest.getPriority());
         article.setPhoto(newArticleRequest.getPhotoURL());
-        article.setJournalistId(newArticleRequest.getJournalistId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+
+        article.setJournalistName(userName);
 
         return article;
     }
 
 
 
-    public List<Article> getArticlesByJournalistId(int id) {
-        var journalist = userRepository.findById(id).get(); //todo throw custom Exception if user is not found
+    public List<Article> getArticlesByJournalistName(String name) {
+        var journalist = userRepository.findByLogin(name).get(); //todo throw custom Exception if user is not found
 
         if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name())) throw new RuntimeException(); //todo throw custom Exception that isn't boss
 
-        return articleRepository.findByJournalistId(journalist.getId());
+        return articleRepository.findByJournalistName(journalist.getLogin());
     }
 }

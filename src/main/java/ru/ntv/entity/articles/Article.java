@@ -49,8 +49,8 @@ public class Article implements Serializable {
     @CreationTimestamp
     private LocalDateTime creationDate;
 
-    @Column(name = "journalist_id")
-    private Integer journalistId;
+    @Column(name = "journalist_name")
+    private String journalistName;
 
 
 }

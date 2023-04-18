@@ -28,6 +28,4 @@ public class NewArticleRequest {
 
     @Size(min = 2, max = 255)
     private String photoURL;
-
-    private Integer journalistId;
 }

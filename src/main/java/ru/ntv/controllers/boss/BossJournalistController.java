@@ -6,9 +6,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.ntv.dto.response.boss.JournalistListResponse;
 import ru.ntv.dto.response.boss.JournalistResponse;
+import ru.ntv.dto.response.common.ArticleResponse;
+import ru.ntv.entity.articles.Article;
+import ru.ntv.exception.NotRightRoleException;
 import ru.ntv.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Validated
@@ -30,6 +34,12 @@ public class BossJournalistController {
         final List<JournalistResponse> journalists = userService.getAllJournalists();
 
         return ResponseEntity.ok(new JournalistListResponse(journalists));
+    }
+
+    @PostMapping("retire")
+    ResponseEntity<?> retireJournalist(@RequestParam int idJournalist) throws NotRightRoleException {
+
+        return ResponseEntity.ok(userService.retireJournalist(idJournalist));
     }
     
 }
