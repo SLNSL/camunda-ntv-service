@@ -10,5 +10,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AuthResponse implements Serializable {
     private String jwt;
+    private String refreshToken;
     private String errorMessage;
 }
