@@ -103,4 +103,20 @@ public class AuthService {
         
         return response;
     }
+
+    public ResponseEntity<AuthResponse> createJournalist(NewUser journalist) {
+        final var response = signUp(journalist);
+        
+        if (!response.getStatusCode().is2xxSuccessful()){
+            return response;
+        }
+
+        userRepository.findByLogin(journalist.getUsername()).get().setRole(
+                roleRepository.findRoleByRoleName(
+                        DatabaseRole.ROLE_JOURNALIST.name()
+                )
+        );
+        
+        return response;
+    }
 }
