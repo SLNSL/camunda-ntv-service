@@ -1,8 +1,6 @@
 package ru.ntv.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.response.boss.JournalistResponse;
@@ -15,7 +13,6 @@ import ru.ntv.repo.user.RoleRepository;
 import ru.ntv.repo.user.UserRepository;
 
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,10 +31,10 @@ public class UserService {
 
 
     @Transactional(transactionManager = "transactionManager")
-    public String retireJournalist(int idJournalist) throws NotRightRoleException{
+    public String dismissJournalist(int journalistId) throws NotRightRoleException{
 
-        final var journalist = userRepository.findById(idJournalist).orElseThrow(); //todo throw custom Exception if user is not found
-        System.out.println(journalist.getLogin() + " " + journalist.getId() + " " + journalist.getRole().getRoleName());
+        final var journalist = userRepository.findById(journalistId).orElseThrow(); //todo throw custom Exception if user is not found
+        //System.out.println(journalist.getLogin() + " " + journalist.getId() + " " + journalist.getRole().getRoleName());
         if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name())) throw new NotRightRoleException("Это не журналист"); //todo throw custom Exception that isn't journalist
 
         journalist.setRole(
@@ -49,21 +46,19 @@ public class UserService {
 
         List<Article> articles = articleRepository.findAllByJournalistName(journalist.getLogin());
 
-        articles.forEach(e -> System.out.println(e.getJournalistName()));
+        //articles.forEach(e -> System.out.println(e.getJournalistName()));
         articles.forEach( a -> a.setJournalistName(null));
 
 
         userRepository.save(journalist);
         articleRepository.saveAll(articles);
 
-        return "уволен";
-
-
+        return "Dismissed";
     }
 
 
     public JournalistResponse getJournalistById(int id) {
-        final var user = userRepository.findById(id).get(); //todo throw custom Exception if user is not found
+        final var user = userRepository.findById(id).orElseThrow(); //todo throw custom Exception if user is not found
         
         return convertUserToJournalist(user);
     }
