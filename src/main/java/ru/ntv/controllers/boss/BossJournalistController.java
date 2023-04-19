@@ -34,8 +34,8 @@ public class BossJournalistController {
     }
 
     @DeleteMapping
-    ResponseEntity<?> dismissJournalist(@RequestParam int journalistId) throws NotRightRoleException {
+    ResponseEntity<?> dismissJournalist(@RequestParam int id) throws NotRightRoleException {
 
-        return ResponseEntity.ok(userService.dismissJournalist(journalistId));
+        return ResponseEntity.ok(userService.dismissJournalist(id));
     }
 }
