@@ -28,4 +28,9 @@ public class AuthController {
     ResponseEntity<AuthResponse> signUp(@Valid @RequestBody NewUser newUser){
         return authService.signUp(newUser);
     }
+    
+    @PostMapping("refresh_token")
+    ResponseEntity<AuthResponse> refreshToken(@RequestParam String jwt)  {
+        return ResponseEntity.ok(authService.refreshToken(jwt));
+    }
 }

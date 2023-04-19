@@ -1,5 +1,6 @@
 package ru.ntv.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,44 +21,40 @@ import ru.ntv.security.JwtTokenProvider;
 @Service
 public class AuthService {
 
-    final
+    @Autowired
     AuthenticationManager authenticationManager;
 
-    final
+    @Autowired
     JwtTokenProvider jwtUtils;
 
-    final
+    @Autowired
     UserRepository userRepository;
 
-    final
+    @Autowired
     PasswordEncoder encoder;
 
-    final
+    @Autowired
     RoleRepository roleRepository;
 
-    public AuthService(AuthenticationManager authenticationManager, JwtTokenProvider jwtUtils, UserRepository userRepository, PasswordEncoder encoder, RoleRepository roleRepository) {
-        this.authenticationManager = authenticationManager;
-        this.jwtUtils = jwtUtils;
-        this.userRepository = userRepository;
-        this.encoder = encoder;
-        this.roleRepository = roleRepository;
-    }
-
     public AuthResponse signIn(OldUser user) throws BadCredentialsException {
+        final var response = new AuthResponse();
+        
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateToken(authentication);
-        AuthResponse response = new AuthResponse();
+        
+        final var jwt = jwtUtils.generateJWTFromAuthentication(authentication);
+        final var refreshToken = jwtUtils.generateRefreshTokenFromAuthentication(authentication);
         response.setJwt("Bearer " + jwt);
+        response.setRefreshToken(refreshToken);
 
         return response;
     }
 
     public ResponseEntity<AuthResponse> signUp(NewUser newUser) {
         final var response = new AuthResponse();
+        
         if (userRepository.existsByLogin(newUser.getUsername())) {
             response.setErrorMessage("This login is already taken");
             return ResponseEntity
@@ -84,10 +81,26 @@ public class AuthService {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final var jwt = jwtUtils.generateToken(authentication);
+        final var jwt = jwtUtils.generateJWTFromAuthentication(authentication);
+        final var refreshToken = jwtUtils.generateRefreshTokenFromAuthentication(authentication);
         response.setJwt("Bearer " + jwt);
+        response.setRefreshToken(refreshToken);
 
         return ResponseEntity.ok(response);
     }
 
+    public AuthResponse refreshToken(String jwt) {
+        final var response = new AuthResponse();
+        
+        if (!jwtUtils.validateRefreshToken(jwt)){
+            response.setErrorMessage("Invalid or expired refresh token");
+            return response;
+        }
+        
+        final var userLogin = jwtUtils.getUserLoginFromToken(jwt);
+        response.setJwt(jwtUtils.generateJWT(userLogin));
+        response.setRefreshToken(jwtUtils.generateRefreshToken(userLogin));
+        
+        return response;
+    }
 }

@@ -1,10 +1,7 @@
 package ru.ntv.entity.articles;
 
-
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import ru.ntv.entity.users.User;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -29,7 +26,6 @@ public class Article implements Serializable {
     )
     private List<Theme> themes;
 
-
     @Column(name = "header", unique = true)
     private String header;
 
@@ -51,6 +47,4 @@ public class Article implements Serializable {
 
     @Column(name = "journalist_name")
     private String journalistName;
-
-
 }
