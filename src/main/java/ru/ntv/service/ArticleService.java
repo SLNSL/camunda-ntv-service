@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.request.journalist.NewArticleRequest;
 import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
@@ -60,6 +61,7 @@ public class ArticleService {
         return res;
     }
 
+    @Transactional
     public Article update(int id, NewArticleRequest req) throws ArticleNotFoundException{
         final var oldArticleOptional = articleRepository.findById(id);
         if (oldArticleOptional.isEmpty()) throw new ArticleNotFoundException("Article not found!");
@@ -81,6 +83,7 @@ public class ArticleService {
     }
 
 
+    @Transactional
     public void delete(int id){
         articleRepository.deleteById(id);
     }

@@ -1,6 +1,8 @@
 package ru.ntv.exception;
 
-public class NotRightRoleException extends Exception{
+import java.util.NoSuchElementException;
+
+public class NotRightRoleException extends NoSuchElementException {
     public NotRightRoleException(String msg){
         super(msg);
     }

@@ -98,7 +98,7 @@ public class AuthService {
         }
         
         final var userLogin = jwtUtils.getUserLoginFromToken(jwt);
-        response.setJwt(jwtUtils.generateJWT(userLogin));
+        response.setJwt("Bearer " + jwtUtils.generateJWT(userLogin));
         response.setRefreshToken(jwtUtils.generateRefreshToken(userLogin));
         
         return response;

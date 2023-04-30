@@ -31,34 +31,38 @@ public class UserService {
 
 
     @Transactional(transactionManager = "transactionManager")
-    public String dismissJournalist(int journalistId) throws NotRightRoleException{
+    public String dismissJournalist(int idJournalist){
 
-        final var journalist = userRepository.findById(journalistId).orElseThrow(); //todo throw custom Exception if user is not found
-        //System.out.println(journalist.getLogin() + " " + journalist.getId() + " " + journalist.getRole().getRoleName());
-        if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name())) throw new NotRightRoleException("Это не журналист"); //todo throw custom Exception that isn't journalist
+            final var journalist = userRepository.findById(idJournalist).orElseThrow();
+            System.out.println(journalist.getLogin() + " " + journalist.getId() + " " + journalist.getRole().getRoleName());
+            if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name()))
+                throw new NotRightRoleException("Это не журналист");
 
-        journalist.setRole(
-                roleRepository.findRoleByRoleName(
-                        DatabaseRole.ROLE_CLIENT.name()
-                )
-        );
-
-
-        List<Article> articles = articleRepository.findAllByJournalistName(journalist.getLogin());
-
-        //articles.forEach(e -> System.out.println(e.getJournalistName()));
-        articles.forEach( a -> a.setJournalistName(null));
+            journalist.setRole(
+                    roleRepository.findRoleByRoleName(
+                            DatabaseRole.ROLE_CLIENT.name()
+                    )
+            );
 
 
-        userRepository.save(journalist);
-        articleRepository.saveAll(articles);
+            List<Article> articles = articleRepository.findAllByJournalistName(journalist.getLogin());
 
-        return "Dismissed";
+            articles.forEach(e -> System.out.println(e.getJournalistName()));
+            articles.forEach(a -> a.setJournalistName(null));
+
+
+            userRepository.save(journalist);
+
+            articleRepository.saveAll(articles);
+
+            return "уволен";
+
+
     }
 
 
     public JournalistResponse getJournalistById(int id) {
-        final var user = userRepository.findById(id).orElseThrow(); //todo throw custom Exception if user is not found
+        final var user = userRepository.findById(id).get(); //todo throw custom Exception if user is not found
         
         return convertUserToJournalist(user);
     }
