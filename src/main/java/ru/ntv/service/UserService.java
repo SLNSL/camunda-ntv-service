@@ -30,7 +30,7 @@ public class UserService {
     ArticleRepository articleRepository;
 
 
-    @Transactional(transactionManager = "transactionManager")
+//    @Transactional(transactionManager = "transactionManager")
     public String dismissJournalist(int idJournalist){
 
             final var journalist = userRepository.findById(idJournalist).orElseThrow();

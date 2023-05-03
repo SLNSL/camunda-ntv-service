@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findByThemesIn(Collection<Theme> themes);
-    
+
     Optional<Article> findById(int id);
 
     Optional<List<Article>> findAllByHeaderContainingIgnoreCase(String header);

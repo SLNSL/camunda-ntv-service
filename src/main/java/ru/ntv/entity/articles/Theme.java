@@ -2,6 +2,7 @@ package ru.ntv.entity.articles;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Theme {
     private String themeName;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "article_theme",
             joinColumns = {@JoinColumn(name = "theme_id")},

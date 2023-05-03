@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.request.journalist.NewArticleRequest;
+import ru.ntv.entity.articles.Theme;
 import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
 import ru.ntv.exception.ArticleNotFoundException;
@@ -17,6 +18,7 @@ import ru.ntv.repo.article.ArticleRepository;
 import ru.ntv.repo.article.ThemeRepository;
 import ru.ntv.repo.user.UserRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,7 +43,7 @@ public class ArticleService {
     public List<Article> getArticlesByThemes(List<Integer> theme_ids) {
         final var themes = themeRepository.findAllById(theme_ids);
 
-        return articleRepository.findByThemesIn(themes);
+        return articleRepository.findByThemesIn((Collection<Theme>) themes);
     }
 
     public Optional<Article> findById(int id){
@@ -61,7 +63,7 @@ public class ArticleService {
         return res;
     }
 
-    @Transactional
+//    @Transactional
     public Article update(int id, NewArticleRequest req) throws ArticleNotFoundException{
         final var oldArticleOptional = articleRepository.findById(id);
         if (oldArticleOptional.isEmpty()) throw new ArticleNotFoundException("Article not found!");
@@ -76,14 +78,14 @@ public class ArticleService {
 
         if (req.getThemeIds() != null) {
             final var themes = themeRepository.findAllById(req.getThemeIds());
-            article.setThemes(themes);
+            article.setThemes((List<Theme>) themes);
         }
 
         return articleRepository.save(article);
     }
 
 
-    @Transactional
+//    @Transactional
     public void delete(int id){
         articleRepository.deleteById(id);
     }
@@ -92,7 +94,7 @@ public class ArticleService {
         final var article = new Article();
         final var themes = themeRepository.findAllById(newArticleRequest.getThemeIds());
 
-        article.setThemes(themes);
+        article.setThemes((List<Theme>) themes);
         article.setHeader(newArticleRequest.getHeader());
         article.setSubheader(newArticleRequest.getSubheader());
         article.setText(newArticleRequest.getText());
