@@ -1,5 +1,6 @@
 package ru.ntv.entity.users;
 
+import javax.persistence.Column;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,22 +13,19 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "my_user")
-public class User {
+@Table(name = "telegram_user")
+public class TelegramUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
     @Column(name = "login")
-    private String login;
+    private String userLogin;
 
-    @JsonIgnore
-    @Column(name = "password")
-    private String password;
+    @Column(name = "telegram_name")
+    private String telegramName;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role;
-
+    @Column(name = "telegram_chat_id")
+    private Long telegramChatId;
 }

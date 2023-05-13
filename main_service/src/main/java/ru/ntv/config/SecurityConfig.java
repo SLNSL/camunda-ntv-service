@@ -74,6 +74,7 @@ public class SecurityConfig{
                         .antMatchers(HttpMethod.PUT, "/articles/**").hasAuthority(DatabasePrivilege.CAN_PUT_ARTICLES.name())
                         .antMatchers(HttpMethod.DELETE, "/articles/**").hasAuthority(DatabasePrivilege.CAN_DELETE_ARTICLES.name())
 
+                        .antMatchers(HttpMethod.POST, "/themes/sub").hasAuthority(DatabasePrivilege.CAN_GET_THEMES.name())
                         .antMatchers(HttpMethod.GET, "/themes/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/themes/**").hasAuthority(DatabasePrivilege.CAN_POST_THEMES.name())
                         .antMatchers(HttpMethod.DELETE, "/themes/**").hasAuthority(DatabasePrivilege.CAN_DELETE_THEMES.name())

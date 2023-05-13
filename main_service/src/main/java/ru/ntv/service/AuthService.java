@@ -9,12 +9,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.request.auth.NewUser;
 import ru.ntv.dto.request.auth.OldUser;
 import ru.ntv.dto.response.auth.AuthResponse;
+import ru.ntv.entity.users.TelegramUser;
 import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
 import ru.ntv.repo.user.RoleRepository;
+import ru.ntv.repo.user.TelegramUserRepository;
 import ru.ntv.repo.user.UserRepository;
 import ru.ntv.security.JwtTokenProvider;
 
@@ -36,6 +39,9 @@ public class AuthService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    TelegramUserRepository telegramUserRepository;
+
     public AuthResponse signIn(OldUser user) throws BadCredentialsException {
         final var response = new AuthResponse();
         
@@ -52,6 +58,7 @@ public class AuthService {
         return response;
     }
 
+    @Transactional
     public ResponseEntity<AuthResponse> signUp(NewUser newUser) {
         final var response = new AuthResponse();
         
@@ -72,6 +79,13 @@ public class AuthService {
                         DatabaseRole.ROLE_CLIENT.name()
                 )
         );
+
+        final var telegramUser = new TelegramUser();
+        telegramUser.setTelegramName(newUser.getTelegram_name());
+        telegramUser.setUserLogin(newUser.getUsername());
+
+
+        telegramUserRepository.save(telegramUser);
         userRepository.save(user);
 
 
