@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  articles_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: nnik1320
+      POSTGRES_DB: news
+    ports:
+      - "5000:5432"
+    volumes:
+      - articles_data:/var/lib/postgresql/data
+  people_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: nnik1320
+      POSTGRES_DB: users
+    ports:
+      - "6000:5432"
+    volumes:
+      - people_data:/var/lib/postgresql/data
+
+volumes:
+  articles_data:
+  people_data:

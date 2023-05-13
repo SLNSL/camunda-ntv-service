@@ -8,12 +8,12 @@ server:
 spring:
   datasource:
     people:
-      url: jdbc:postgresql://localhost:5432/users
+      url: jdbc:postgresql://localhost:6000/users
       username: postgres
       password: nnik1320
       driver-class-name: org.postgresql.Driver
     articles:
-      url: jdbc:postgresql://localhost:5432/news
+      url: jdbc:postgresql://localhost:5000/news
       username: postgres
       password: nnik1320
       driver-class-name: org.postgresql.Driver

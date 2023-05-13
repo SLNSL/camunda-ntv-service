@@ -1,7 +1,6 @@
 HELP.md
 target/
-main_service/src/main/resources/application.yml
-!main_service/.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -32,7 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Other
-tmlog.lck
-tmlog*.log
