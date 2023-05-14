@@ -8,6 +8,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.kafka.ArticleKafkaDTO;
 import ru.ntv.dto.request.journalist.NewArticleRequest;
 import ru.ntv.entity.articles.Theme;
@@ -57,10 +58,12 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
 
+    @Transactional
     public Article createArticle(NewArticleRequest newArticleRequest) {
 
         Article article = convertNewArticleRequestToArticle(newArticleRequest);
 
+        article = articleRepository.save(article);
 
         ArticleKafkaDTO articleKafkaDTO = new ArticleKafkaDTO();
         articleKafkaDTO.setHeader(newArticleRequest.getHeader());
@@ -76,7 +79,7 @@ public class ArticleService {
         template.send("article-topic", articleKafkaDTO);
 
 
-        return articleRepository.save(article);
+        return article;
     }
 
     public ArticlesResponse getAll(Integer offset, Integer limit){
