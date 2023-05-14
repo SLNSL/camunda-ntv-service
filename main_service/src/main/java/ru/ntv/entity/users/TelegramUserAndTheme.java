@@ -1,6 +1,5 @@
 package ru.ntv.entity.users;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

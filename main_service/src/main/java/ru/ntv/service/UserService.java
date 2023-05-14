@@ -30,11 +30,10 @@ public class UserService {
     ArticleRepository articleRepository;
 
 
-//    @Transactional(transactionManager = "transactionManager")
+    @Transactional(transactionManager = "transactionManager")
     public String dismissJournalist(int idJournalist){
 
             final var journalist = userRepository.findById(idJournalist).orElseThrow();
-            System.out.println(journalist.getLogin() + " " + journalist.getId() + " " + journalist.getRole().getRoleName());
             if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name()))
                 throw new NotRightRoleException("Это не журналист");
 
@@ -44,20 +43,13 @@ public class UserService {
                     )
             );
 
-
             List<Article> articles = articleRepository.findAllByJournalistName(journalist.getLogin());
-
-            articles.forEach(e -> System.out.println(e.getJournalistName()));
-            articles.forEach(a -> a.setJournalistName(null));
-
-
+            articles.forEach(article -> article.setJournalistName(null));
+            
             userRepository.save(journalist);
-
             articleRepository.saveAll(articles);
 
             return "уволен";
-
-
     }
 
 

@@ -11,14 +11,13 @@ public class TelegramUserService {
 
     @Autowired
     TelegramUserRepository telegramUserRepository;
-
-
+    
     public void saveChatId(String telegramName, Long chatId){
-        System.out.println(telegramName);
-        TelegramUser user = telegramUserRepository.findByTelegramName(telegramName).get();
-        System.out.println(user);
+        TelegramUser user = telegramUserRepository
+                .findByTelegramName(telegramName)
+                .get();
+        
         user.setTelegramChatId(chatId);
         telegramUserRepository.save(user);
-
     }
 }

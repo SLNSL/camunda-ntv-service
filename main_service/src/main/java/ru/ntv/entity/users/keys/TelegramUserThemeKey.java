@@ -1,8 +1,6 @@
 package ru.ntv.entity.users.keys;
 
-
 import lombok.Data;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;

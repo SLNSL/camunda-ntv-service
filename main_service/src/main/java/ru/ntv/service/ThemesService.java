@@ -1,11 +1,9 @@
 package ru.ntv.service;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.request.journalist.CreateThemeRequest;
-import ru.ntv.dto.request.theme.SubOnThemesRequest;
 import ru.ntv.dto.response.common.ThemesResponse;
 import ru.ntv.entity.articles.Article;
 import ru.ntv.entity.articles.Theme;
@@ -28,9 +26,12 @@ public class ThemesService {
 
     private final TelegramUserRepository telegramUserRepository;
 
-    public ThemesService(ThemeRepository themeRepository, ArticleRepository articleRepository,
-                         TelegramUserAndThemeRepository telegramUserAndThemeRepository,
-                         TelegramUserRepository telegramUserRepository) {
+    public ThemesService (
+            ThemeRepository themeRepository,
+            ArticleRepository articleRepository,
+            TelegramUserAndThemeRepository telegramUserAndThemeRepository,
+            TelegramUserRepository telegramUserRepository
+    ) {
         this.themeRepository = themeRepository;
         this.articleRepository = articleRepository;
         this.telegramUserAndThemeRepository = telegramUserAndThemeRepository;
@@ -39,14 +40,15 @@ public class ThemesService {
 
     public ThemesResponse getAllThemes(){
         final var response = new ThemesResponse();
-        response.setThemes((List<Theme>) themeRepository.findAll());
+        response.setThemes(themeRepository.findAll());
 
         return response;
     }
 
     public Theme create(CreateThemeRequest req){
-        var theme = new Theme();
+        final var theme = new Theme();
         theme.setThemeName(req.getName());
+        
         return themeRepository.save(theme);
     }
 
@@ -63,32 +65,29 @@ public class ThemesService {
 
         themeRepository.delete(theme);
     }
-
-
-
+    
     @Transactional
-    public boolean subOnThemes(SubOnThemesRequest subOnThemesRequest){
-        List<String> themeList = subOnThemesRequest.getThemes();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
+    public void subscribeToThemes(List<Integer> themeIds){
+        final var userName = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
 
-        String telegramUserName = telegramUserRepository.findByUserLogin(userName).get().getTelegramName();
+        final var telegramUserName = telegramUserRepository
+                .findByUserLogin(userName)
+                .get()
+                .getTelegramName();
 
-        themeList.forEach(theme -> {
-            TelegramUserAndTheme telegramUserAndTheme = new TelegramUserAndTheme();
+        final var themes = themeRepository.findAllById(themeIds);
 
+        themes.forEach(theme -> {
             TelegramUserThemeKey telegramUserThemeKey = new TelegramUserThemeKey();
             telegramUserThemeKey.setTelegramUserName(telegramUserName);
-            telegramUserThemeKey.setThemeName(theme);
+            telegramUserThemeKey.setThemeName(theme.getThemeName());
 
+            TelegramUserAndTheme telegramUserAndTheme = new TelegramUserAndTheme();
             telegramUserAndTheme.setId(telegramUserThemeKey);
-
             telegramUserAndThemeRepository.save(telegramUserAndTheme);
-
         });
-
-
-        return true;
-
     }
 }

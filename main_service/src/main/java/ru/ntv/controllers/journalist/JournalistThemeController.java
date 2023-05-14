@@ -17,7 +17,7 @@ public class JournalistThemeController {
     @Autowired
     private ThemesService themesService;
 
-    @PostMapping()
+    @PostMapping
     ResponseEntity<Theme> create(@Valid @RequestBody CreateThemeRequest req){
         final var theme = themesService.create(req);
 

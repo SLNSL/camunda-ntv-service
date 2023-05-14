@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.ntv.entity.users.Role;
-
 import javax.persistence.*;
 
 @Entity
@@ -29,5 +27,4 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
-
 }
