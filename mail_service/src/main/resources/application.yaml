@@ -1,0 +1,10 @@
+spring:
+  mail:
+    host: smtp.mail.ru
+    username: ntv.digest@mail.ru
+    password: ***
+    port: 465
+    protocol: smtps
+
+mail:
+  debug: true

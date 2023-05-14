@@ -1,10 +1,8 @@
 package ru.ntv.tg_service.controllers;
 
-import javax.transaction.Transactional;
 import javax.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.ntv.tg_service.dto.NewArticleRequest;
 import ru.ntv.tg_service.service.ArticleService;

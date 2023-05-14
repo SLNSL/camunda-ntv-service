@@ -30,32 +30,31 @@ public class ArticleService {
     @Autowired
     TelegramBot telegramBot;
 
-    public String sendArticles(NewArticleRequest newArticleRequest){
+    public String sendArticles(NewArticleRequest newArticleRequest) {
         Set<Long> usersGetNew = new HashSet<>();
         AtomicInteger res = new AtomicInteger();
         List<String> themesList = newArticleRequest.getThemes();
-         themesList.forEach(theme -> {
-             telegramUserAndThemeRepository.findByIdThemeName(theme).forEach(telegramUserAndTheme -> {
-
-                 SendMessage sendMessage = new SendMessage();
-                 TelegramUser telegramUser = telegramUserRepository.findByTelegramName(telegramUserAndTheme.getId().getTelegramUserName()).get();
-                 if (usersGetNew.contains(telegramUser.getTelegramChatId())) return;
-                 sendMessage.setChatId(telegramUser.getTelegramChatId());
-                 String message = newArticleRequest.toString();
-                 InputFile photo = new InputFile(newArticleRequest.getPhotoURL());
-
-                 SendPhoto sendPhoto = new SendPhoto(telegramUser.getTelegramChatId().toString(), photo);
-                 sendPhoto.setCaption(message);
-                 try {
-                     telegramBot.execute(sendPhoto);
-                     res.getAndIncrement();
-                     usersGetNew.add(telegramUser.getTelegramChatId());
-                 } catch (TelegramApiException e){
-                     e.printStackTrace();
-                 }
-
-             });
-         });
-    return "Отправлено " + res + " новостей";
+        
+        themesList.forEach(theme -> {
+            telegramUserAndThemeRepository.findByIdThemeName(theme).forEach(telegramUserAndTheme -> {
+                SendMessage sendMessage = new SendMessage();
+                TelegramUser telegramUser = telegramUserRepository.findByTelegramName(telegramUserAndTheme.getId().getTelegramUserName()).get();
+                if (usersGetNew.contains(telegramUser.getTelegramChatId())) return;
+                sendMessage.setChatId(telegramUser.getTelegramChatId());
+                String message = newArticleRequest.toString();
+                InputFile photo = new InputFile(newArticleRequest.getPhotoURL());
+                
+                SendPhoto sendPhoto = new SendPhoto(telegramUser.getTelegramChatId().toString(), photo);
+                sendPhoto.setCaption(message);
+                try {
+                    telegramBot.execute(sendPhoto);
+                    res.getAndIncrement();
+                    usersGetNew.add(telegramUser.getTelegramChatId());
+                } catch (TelegramApiException e){
+                    e.printStackTrace();
+                }
+            });
+        });
+        return "Отправлено " + res + " новостей";
     }
 }
