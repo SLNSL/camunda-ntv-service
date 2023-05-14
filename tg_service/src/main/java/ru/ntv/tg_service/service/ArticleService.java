@@ -2,12 +2,15 @@ package ru.ntv.tg_service.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.ntv.tg_service.dto.NewArticleRequest;
+import ru.ntv.tg_service.dto.kafka.ArticleKafkaDTO;
 import ru.ntv.tg_service.entity.TelegramUser;
 import ru.ntv.tg_service.repo.TelegramUserAndThemeRepository;
 import ru.ntv.tg_service.repo.TelegramUserRepository;
@@ -30,10 +33,12 @@ public class ArticleService {
     @Autowired
     TelegramBot telegramBot;
 
-    public String sendArticles(NewArticleRequest newArticleRequest) {
+
+    @KafkaListener(id = "tgGroup", topics = "article-topic")
+    public void sendArticles(ArticleKafkaDTO articleKafkaDTO) {
         Set<Long> usersGetNew = new HashSet<>();
         AtomicInteger res = new AtomicInteger();
-        List<String> themesList = newArticleRequest.getThemes();
+        List<String> themesList = articleKafkaDTO.getThemes();
         
         themesList.forEach(theme -> {
             telegramUserAndThemeRepository.findByIdThemeName(theme).forEach(telegramUserAndTheme -> {
@@ -41,11 +46,12 @@ public class ArticleService {
                 TelegramUser telegramUser = telegramUserRepository.findByTelegramName(telegramUserAndTheme.getId().getTelegramUserName()).get();
                 if (usersGetNew.contains(telegramUser.getTelegramChatId())) return;
                 sendMessage.setChatId(telegramUser.getTelegramChatId());
-                String message = newArticleRequest.toString();
-                InputFile photo = new InputFile(newArticleRequest.getPhotoURL());
+                String message = articleKafkaDTO.toString();
+                InputFile photo = new InputFile(articleKafkaDTO.getPhotoURL());
                 
                 SendPhoto sendPhoto = new SendPhoto(telegramUser.getTelegramChatId().toString(), photo);
                 sendPhoto.setCaption(message);
+                sendPhoto.setParseMode(ParseMode.HTML);
                 try {
                     telegramBot.execute(sendPhoto);
                     res.getAndIncrement();
@@ -55,6 +61,5 @@ public class ArticleService {
                 }
             });
         });
-        return "Отправлено " + res + " новостей";
     }
 }

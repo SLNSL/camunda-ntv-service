@@ -3,13 +3,14 @@ package ru.ntv.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import ru.ntv.dto.kafka.ArticleKafkaDTO;
 import ru.ntv.dto.request.journalist.NewArticleRequest;
 import ru.ntv.entity.articles.Theme;
-import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
 import ru.ntv.exception.ArticleNotFoundException;
 import ru.ntv.dto.response.common.ArticlesResponse;
@@ -22,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -35,6 +37,11 @@ public class ArticleService {
 
     @Autowired
     private UserRepository userRepository;
+    private final KafkaTemplate<String, ArticleKafkaDTO> template;
+
+    public ArticleService(KafkaTemplate<String, ArticleKafkaDTO>  template) {
+        this.template = template;
+    }
 
     public Optional<List<Article>> findByHeader(String header){
         return articleRepository.findAllByHeaderContainingIgnoreCase(header);
@@ -51,15 +58,30 @@ public class ArticleService {
     }
 
     public Article createArticle(NewArticleRequest newArticleRequest) {
-        return articleRepository.save(
-                convertNewArticleRequestToArticle(newArticleRequest)
+
+        Article article = convertNewArticleRequestToArticle(newArticleRequest);
+
+
+        ArticleKafkaDTO articleKafkaDTO = new ArticleKafkaDTO();
+        articleKafkaDTO.setHeader(newArticleRequest.getHeader());
+        articleKafkaDTO.setSubheader(newArticleRequest.getSubheader());
+        articleKafkaDTO.setText(newArticleRequest.getText());
+        articleKafkaDTO.setPhotoURL(newArticleRequest.getPhotoURL());
+        articleKafkaDTO.setThemes(
+                article.getThemes().stream().map(Theme::getThemeName).collect(Collectors.toList())
         );
+
+
+
+        template.send("article-topic", articleKafkaDTO);
+
+
+        return articleRepository.save(article);
     }
 
     public ArticlesResponse getAll(Integer offset, Integer limit){
         final var res = new ArticlesResponse();
         res.setArticles(articleRepository.findAll(PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "creationDate"))).get().toList());
-
         return res;
     }
 
@@ -83,6 +105,7 @@ public class ArticleService {
 
         return articleRepository.save(article);
     }
+
 
 
 //    @Transactional

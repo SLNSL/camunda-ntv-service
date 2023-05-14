@@ -11,6 +11,10 @@ bot:
   token: 6116759525:AAGK8tzJijJbOLR5iGArE5c-rhHa4wVpyXg
 
 spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+
   datasource:
     url: jdbc:postgresql://localhost:5432/users
     username: postgres
