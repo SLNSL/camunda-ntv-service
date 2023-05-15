@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ntv.dto.Converter;
 import ru.ntv.dto.kafka.ArticleKafkaDTO;
 import ru.ntv.dto.request.journalist.NewArticleRequest;
 import ru.ntv.entity.articles.Theme;
@@ -79,7 +80,7 @@ public class ArticleService {
         articleKafkaDTO.setText(newArticleRequest.getText());
         articleKafkaDTO.setPhotoURL(newArticleRequest.getPhotoURL());
         articleKafkaDTO.setThemes(
-                article.getThemes().stream().map(Theme::getThemeName).collect(Collectors.toList())
+                article.getThemes().stream().map(Converter::themeToDtoConverter).collect(Collectors.toList())
         );
 
         article = articleRepository.findByHeader(articleKafkaDTO.getHeader()).get();
@@ -89,11 +90,12 @@ public class ArticleService {
                 String.valueOf(article.getId()),
                 articleKafkaDTO
         );
+
         producer.send(record, (recordMetadata, e) -> {
             e.printStackTrace();
         });
 
-        producer.close();
+
 
 
 

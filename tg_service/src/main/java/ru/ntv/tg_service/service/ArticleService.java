@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.ntv.tg_service.dto.NewArticleRequest;
 import ru.ntv.tg_service.dto.kafka.ArticleKafkaDTO;
+import ru.ntv.tg_service.dto.kafka.ThemeDTO;
 import ru.ntv.tg_service.entity.TelegramUser;
 import ru.ntv.tg_service.repo.TelegramUserAndThemeRepository;
 import ru.ntv.tg_service.repo.TelegramUserRepository;
@@ -36,14 +37,15 @@ public class ArticleService {
 
     @KafkaListener(id = "tgGroup", topics = "article-topic")
     public void sendArticles(ArticleKafkaDTO articleKafkaDTO) {
+        System.out.println(articleKafkaDTO.getThemes());
         Set<Long> usersGetNew = new HashSet<>();
         AtomicInteger res = new AtomicInteger();
-        List<String> themesList = articleKafkaDTO.getThemes();
+        List<ThemeDTO> themesList = articleKafkaDTO.getThemes();
         
         themesList.forEach(theme -> {
-            telegramUserAndThemeRepository.findByIdThemeName(theme).forEach(telegramUserAndTheme -> {
+            telegramUserAndThemeRepository.findByIdThemeId(theme.getId()).forEach(telegramUserAndTheme -> {
                 SendMessage sendMessage = new SendMessage();
-                TelegramUser telegramUser = telegramUserRepository.findByTelegramName(telegramUserAndTheme.getId().getTelegramUserName()).get();
+                TelegramUser telegramUser = telegramUserRepository.findById(telegramUserAndTheme.getId().getTelegramUserId()).get();
                 if (usersGetNew.contains(telegramUser.getTelegramChatId())) return;
                 sendMessage.setChatId(telegramUser.getTelegramChatId());
                 String message = articleKafkaDTO.toString();

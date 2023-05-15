@@ -11,5 +11,6 @@ import java.io.Serializable;
 public class AuthResponse implements Serializable {
     private String jwt;
     private String refreshToken;
+    private String message;
     private String errorMessage;
 }

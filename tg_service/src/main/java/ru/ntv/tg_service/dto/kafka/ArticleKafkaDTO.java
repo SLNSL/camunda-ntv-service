@@ -5,10 +5,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class ArticleKafkaDTO implements Serializable {
-    private List<String> themes;
+    private List<ThemeDTO> themes;
     private String header;
     private String subheader;
     private String text;
@@ -18,7 +19,7 @@ public class ArticleKafkaDTO implements Serializable {
     @Override
     public String toString(){
         return "<b>" + header + "</b>" + "\n\n" +
-                "Темы: " + String.join(", ", themes) + "\n\n" +
+                "Темы: " + themes.stream().map(ThemeDTO::getName).collect(Collectors.joining(", ")) + "\n\n" +
                 subheader + "\n" +
                 text;
     }

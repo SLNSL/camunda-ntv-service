@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface TelegramUserAndThemeRepository extends JpaRepository<TelegramUserAndTheme, TelegramUserThemeKey> {
 
-    List<TelegramUserAndTheme> findByIdThemeName(String themeName);
+    List<TelegramUserAndTheme> findByIdThemeId(Integer themeId);
 }

@@ -17,8 +17,8 @@ public class TelegramUser {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "login")
-    private String userLogin;
+    @Column(name = "user_id")
+    private Integer userId;
 
     @Column(name = "telegram_name")
     private String telegramName;

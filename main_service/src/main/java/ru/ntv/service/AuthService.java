@@ -54,6 +54,7 @@ public class AuthService {
         final var refreshToken = jwtUtils.generateRefreshTokenFromAuthentication(authentication);
         response.setJwt("Bearer " + jwt);
         response.setRefreshToken(refreshToken);
+        response.setMessage("Для пользования ботом необходимо отправить боту /start и подписаться на темы");
 
         return response;
     }
@@ -79,14 +80,14 @@ public class AuthService {
                         DatabaseRole.ROLE_CLIENT.name()
                 )
         );
+        userRepository.save(user);
+
 
         final var telegramUser = new TelegramUser();
         telegramUser.setTelegramName(newUser.getTelegram_name());
-        telegramUser.setUserLogin(newUser.getUsername());
-
-
+        telegramUser.setUserId(user.getId());
         telegramUserRepository.save(telegramUser);
-        userRepository.save(user);
+
 
 
         // Sign in
@@ -99,6 +100,7 @@ public class AuthService {
         final var refreshToken = jwtUtils.generateRefreshTokenFromAuthentication(authentication);
         response.setJwt("Bearer " + jwt);
         response.setRefreshToken(refreshToken);
+        response.setMessage("Для пользования ботом необходимо отправить боту /start и подписаться на темы");
 
         return ResponseEntity.ok(response);
     }

@@ -13,6 +13,7 @@ import ru.ntv.repo.article.ArticleRepository;
 import ru.ntv.repo.article.ThemeRepository;
 import ru.ntv.repo.user.TelegramUserAndThemeRepository;
 import ru.ntv.repo.user.TelegramUserRepository;
+import ru.ntv.repo.user.UserRepository;
 
 import java.util.List;
 
@@ -26,16 +27,19 @@ public class ThemesService {
 
     private final TelegramUserRepository telegramUserRepository;
 
+    private final UserRepository userRepository;
+
     public ThemesService (
             ThemeRepository themeRepository,
             ArticleRepository articleRepository,
             TelegramUserAndThemeRepository telegramUserAndThemeRepository,
-            TelegramUserRepository telegramUserRepository
-    ) {
+            TelegramUserRepository telegramUserRepository,
+            UserRepository userRepository) {
         this.themeRepository = themeRepository;
         this.articleRepository = articleRepository;
         this.telegramUserAndThemeRepository = telegramUserAndThemeRepository;
         this.telegramUserRepository = telegramUserRepository;
+        this.userRepository = userRepository;
     }
 
     public ThemesResponse getAllThemes(){
@@ -73,17 +77,18 @@ public class ThemesService {
                 .getAuthentication()
                 .getName();
 
-        final var telegramUserName = telegramUserRepository
-                .findByUserLogin(userName)
-                .get()
-                .getTelegramName();
+        final var user = userRepository.findByLogin(userName).get();
+
+        final var telegramUser = telegramUserRepository
+                .findByUserId(user.getId())
+                .get();
 
         final var themes = themeRepository.findAllById(themeIds);
 
         themes.forEach(theme -> {
             TelegramUserThemeKey telegramUserThemeKey = new TelegramUserThemeKey();
-            telegramUserThemeKey.setTelegramUserName(telegramUserName);
-            telegramUserThemeKey.setThemeName(theme.getThemeName());
+            telegramUserThemeKey.setTelegramUserId(telegramUser.getId());
+            telegramUserThemeKey.setThemeId(theme.getId());
 
             TelegramUserAndTheme telegramUserAndTheme = new TelegramUserAndTheme();
             telegramUserAndTheme.setId(telegramUserThemeKey);

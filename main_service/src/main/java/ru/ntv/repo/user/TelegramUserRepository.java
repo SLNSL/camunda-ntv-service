@@ -13,5 +13,5 @@ import java.util.Optional;
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Integer> {
 
 
-    Optional<TelegramUser> findByUserLogin(String login);
+    Optional<TelegramUser> findByUserId(Integer userId);
 }
