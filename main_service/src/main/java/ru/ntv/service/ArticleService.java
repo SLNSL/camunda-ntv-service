@@ -1,10 +1,11 @@
 package ru.ntv.service;
 
+import lombok.extern.log4j.Log4j2;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 public class ArticleService {
 
     @Autowired
@@ -38,11 +40,17 @@ public class ArticleService {
 
     @Autowired
     private UserRepository userRepository;
-    private final KafkaTemplate<String, ArticleKafkaDTO> template;
 
-    public ArticleService(KafkaTemplate<String, ArticleKafkaDTO>  template) {
-        this.template = template;
+    private final Producer<String, ArticleKafkaDTO> producer;
+
+    public ArticleService(Producer<String, ArticleKafkaDTO> producer) {
+        this.producer = producer;
     }
+//    private final KafkaTemplate<String, ArticleKafkaDTO> template;
+
+//    public ArticleService(KafkaTemplate<String, ArticleKafkaDTO>  template) {
+//        this.template = template;
+//    }
 
     public Optional<List<Article>> findByHeader(String header){
         return articleRepository.findAllByHeaderContainingIgnoreCase(header);
@@ -74,9 +82,24 @@ public class ArticleService {
                 article.getThemes().stream().map(Theme::getThemeName).collect(Collectors.toList())
         );
 
+        article = articleRepository.findByHeader(articleKafkaDTO.getHeader()).get();
+
+        ProducerRecord<String, ArticleKafkaDTO> record = new ProducerRecord<>(
+                "article-topic",
+                String.valueOf(article.getId()),
+                articleKafkaDTO
+        );
+
+        log.info("New Producer record: " + record);
+        producer.send(record, (recordMetadata, e) -> {
+            log.info("Got ack from Kafka. Errors: " + e);
+        });
+
+        producer.close();
 
 
-        template.send("article-topic", articleKafkaDTO);
+
+//        template.send("article-topic", articleKafkaDTO);
 
 
         return article;
