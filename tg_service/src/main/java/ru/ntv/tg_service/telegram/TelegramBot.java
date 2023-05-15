@@ -40,7 +40,7 @@ public class TelegramBot extends TelegramLongPollingBot{
 
 
         sendMessage.setChatId(chatId);
-        sendMessage.setText("Для пользования ботом необходимо отправить запрос http://localhost:21412/themes/sub " +
+        sendMessage.setText("Для начала работы с ботом необходимо перейти по ссылке http://localhost:21412/themes/subscribe " +
                 "и подписаться на рассылку новостей, с определенной темой");
 
         try {

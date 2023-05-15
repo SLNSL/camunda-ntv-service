@@ -20,26 +20,22 @@ import java.util.List;
 @Service
 public class ThemesService {
     private final ThemeRepository themeRepository;
-
     private final TelegramUserAndThemeRepository telegramUserAndThemeRepository;
-
     private final ArticleRepository articleRepository;
-
     private final TelegramUserRepository telegramUserRepository;
-
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     public ThemesService (
             ThemeRepository themeRepository,
             ArticleRepository articleRepository,
             TelegramUserAndThemeRepository telegramUserAndThemeRepository,
             TelegramUserRepository telegramUserRepository,
-            UserRepository userRepository) {
+            UserService userService) {
         this.themeRepository = themeRepository;
         this.articleRepository = articleRepository;
         this.telegramUserAndThemeRepository = telegramUserAndThemeRepository;
         this.telegramUserRepository = telegramUserRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public ThemesResponse getAllThemes(){
@@ -72,12 +68,7 @@ public class ThemesService {
     
     @Transactional
     public void subscribeToThemes(List<Integer> themeIds){
-        final var userName = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
-
-        final var user = userRepository.findByLogin(userName).get();
+        final var user = userService.getCurrentUser();
 
         final var telegramUser = telegramUserRepository
                 .findByUserId(user.getId())
@@ -94,5 +85,15 @@ public class ThemesService {
             telegramUserAndTheme.setId(telegramUserThemeKey);
             telegramUserAndThemeRepository.save(telegramUserAndTheme);
         });
+    }
+
+    public void unsubscribeFromAllThemes() {
+        final var user = userService.getCurrentUser();
+
+        final var telegramUser = telegramUserRepository
+                .findByUserId(user.getId())
+                .get();
+        
+        telegramUserRepository.deleteAllByTelegramName(telegramUser.getTelegramName());
     }
 }

@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.ntv.tg_service.dto.NewArticleRequest;
 import ru.ntv.tg_service.dto.kafka.ArticleKafkaDTO;
 import ru.ntv.tg_service.dto.kafka.ThemeDTO;
 import ru.ntv.tg_service.entity.TelegramUser;
