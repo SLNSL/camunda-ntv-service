@@ -89,10 +89,8 @@ public class ArticleService {
                 String.valueOf(article.getId()),
                 articleKafkaDTO
         );
-
-        log.info("New Producer record: " + record);
         producer.send(record, (recordMetadata, e) -> {
-            log.info("Got ack from Kafka. Errors: " + e);
+            e.printStackTrace();
         });
 
         producer.close();
