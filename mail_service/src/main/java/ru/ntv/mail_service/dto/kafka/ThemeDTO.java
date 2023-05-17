@@ -1,7 +1,6 @@
-package ru.ntv.dto.kafka;
+package ru.ntv.mail_service.dto.kafka;
 
 import lombok.Data;
-
 import java.io.Serializable;
 
 @Data

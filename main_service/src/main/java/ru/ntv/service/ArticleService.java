@@ -37,21 +37,12 @@ public class ArticleService {
 
     @Autowired
     private ThemeRepository themeRepository;
-
-
+    
     @Autowired
     private UserRepository userRepository;
 
-    private final Producer<String, ArticleKafkaDTO> producer;
-
-    public ArticleService(Producer<String, ArticleKafkaDTO> producer) {
-        this.producer = producer;
-    }
-//    private final KafkaTemplate<String, ArticleKafkaDTO> template;
-
-//    public ArticleService(KafkaTemplate<String, ArticleKafkaDTO>  template) {
-//        this.template = template;
-//    }
+    @Autowired
+    private Producer<String, ArticleKafkaDTO> producer;
 
     public Optional<List<Article>> findByHeader(String header){
         return articleRepository.findAllByHeaderContainingIgnoreCase(header);
@@ -71,7 +62,6 @@ public class ArticleService {
     public Article createArticle(NewArticleRequest newArticleRequest) {
 
         Article article = convertNewArticleRequestToArticle(newArticleRequest);
-
         article = articleRepository.save(article);
 
         ArticleKafkaDTO articleKafkaDTO = new ArticleKafkaDTO();
@@ -83,8 +73,6 @@ public class ArticleService {
                 article.getThemes().stream().map(Converter::themeToDtoConverter).collect(Collectors.toList())
         );
 
-        article = articleRepository.findByHeader(articleKafkaDTO.getHeader()).get();
-
         ProducerRecord<String, ArticleKafkaDTO> record = new ProducerRecord<>(
                 "article-topic",
                 String.valueOf(article.getId()),
@@ -95,13 +83,6 @@ public class ArticleService {
             e.printStackTrace();
         });
 
-
-
-
-
-//        template.send("article-topic", articleKafkaDTO);
-
-
         return article;
     }
 
@@ -110,8 +91,7 @@ public class ArticleService {
         res.setArticles(articleRepository.findAll(PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "creationDate"))).get().toList());
         return res;
     }
-
-//    @Transactional
+    
     public Article update(int id, NewArticleRequest req) throws ArticleNotFoundException{
         final var oldArticleOptional = articleRepository.findById(id);
         if (oldArticleOptional.isEmpty()) throw new ArticleNotFoundException("Article not found!");
@@ -133,8 +113,7 @@ public class ArticleService {
     }
 
 
-
-//    @Transactional
+    
     public void delete(int id){
         articleRepository.deleteById(id);
     }
@@ -157,8 +136,7 @@ public class ArticleService {
         return article;
     }
 
-
-
+    
     public List<Article> getArticlesByJournalistName(String name) {
         var journalist = userRepository.findByLogin(name).get(); //todo throw custom Exception if user is not found
 

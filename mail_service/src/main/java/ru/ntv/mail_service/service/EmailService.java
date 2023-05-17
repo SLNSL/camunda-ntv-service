@@ -7,11 +7,17 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import ru.ntv.mail_service.dto.kafka.ArticleKafkaDTO;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Component
 @NoArgsConstructor
@@ -25,12 +31,20 @@ public class EmailService {
     
     private static final String EMAIL_SUBJECT = "НТВ. Актуальные новости.";
 
-    @PostConstruct
+/*    @PostConstruct
     public void sendTestEmail() {
         String email = "Sitkevich2002@mail.ru";
         String message = "Привет, <b>" + email + "</b>";
         send(email, message);
-    }
+    }*/
+    
+    private static AtomicInteger i = new AtomicInteger(0);  
+    
+/*    @Async
+    @Scheduled(fixedRate = 200)
+    void print(){
+        System.out.println(i.addAndGet(1));
+    }*/
 
     @Async
     void send(String to, String message) {
@@ -47,5 +61,24 @@ public class EmailService {
         } catch (MessagingException | MailSendException e) {
             throw new IllegalStateException("Failed to send email to " + to);
         }
+    }
+    
+    public String composeEmail(Collection<ArticleKafkaDTO> articles){
+        String email = articles.stream().map(article -> (
+            "<div>" +
+                "<h4>" + article.getHeader() + "</h4>" +
+                "<h5>" + article.getSubheader() + "</h4>" +
+                "<p>" + article.getText() + "</p>" +
+                "<img src=\"" + article.getPhotoURL() + "\" style=\"max-width:100px;width:100%\">" +
+            "</div>")).collect(Collectors.joining());
+        email = "<div>" + email + "</div>";
+        
+        return email;
+    }
+    
+    @Async
+    public void sendArticles(String to, Collection<ArticleKafkaDTO> articles){
+        var email = composeEmail(articles);
+        send(to, email);
     }
 }
