@@ -7,16 +7,12 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.ntv.mail_service.dto.kafka.ArticleKafkaDTO;
 
-import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
@@ -30,21 +26,6 @@ public class EmailService {
     private JavaMailSender javaMailSender;
     
     private static final String EMAIL_SUBJECT = "НТВ. Актуальные новости.";
-
-/*    @PostConstruct
-    public void sendTestEmail() {
-        String email = "Sitkevich2002@mail.ru";
-        String message = "Привет, <b>" + email + "</b>";
-        send(email, message);
-    }*/
-    
-    private static AtomicInteger i = new AtomicInteger(0);  
-    
-/*    @Async
-    @Scheduled(fixedRate = 200)
-    void print(){
-        System.out.println(i.addAndGet(1));
-    }*/
 
     @Async
     void send(String to, String message) {
@@ -69,7 +50,7 @@ public class EmailService {
                 "<h4>" + article.getHeader() + "</h4>" +
                 "<h5>" + article.getSubheader() + "</h4>" +
                 "<p>" + article.getText() + "</p>" +
-                "<img src=\"" + article.getPhotoURL() + "\" style=\"max-width:100px;width:100%\">" +
+                "<img src=\"" + article.getPhotoURL() + "\" style=\"max-width:250px;width:100%\">" +
             "</div>")).collect(Collectors.joining());
         email = "<div>" + email + "</div>";
         

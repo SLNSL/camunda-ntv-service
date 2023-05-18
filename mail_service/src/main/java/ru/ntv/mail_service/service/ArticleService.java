@@ -15,6 +15,7 @@ import java.util.*;
 public class ArticleService {
     
     private List<ArticleKafkaDTO> storage = new ArrayList<>();
+    
     @Autowired
     private EmailUserRepository emailUserRepository;
 
@@ -31,8 +32,10 @@ public class ArticleService {
     }
     
 
-    @Scheduled(cron = "0 0 23 * * *")
+    //@Scheduled(cron = "0 0 23 * * *")
+    @Scheduled(fixedRate = 60 * 1000)
     public void sendDigest(){
+        if (storage.size() == 0) return;
         HashMap<Integer, List<ArticleKafkaDTO>> articlesByThemeIds = new HashMap<>();
         HashMap<Integer, Set<ArticleKafkaDTO>> articlesByUserId = new HashMap<>();
         
@@ -58,7 +61,10 @@ public class ArticleService {
             if (!articlesByUserId.containsKey(userId)){
                 articlesByUserId.put(userId, new HashSet<>());
             }
-            
+            System.out.println(userId);
+            System.out.println(themeId);
+            System.out.println(articlesByUserId.get(userId));
+            System.out.println(articlesByThemeIds.get(themeId));
             articlesByUserId.get(userId).addAll(articlesByThemeIds.get(themeId));
         });
 
@@ -68,5 +74,7 @@ public class ArticleService {
                         articles
                 )
         );
+
+        storage.clear();
     }
 }
