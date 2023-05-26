@@ -8,7 +8,10 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@ToString(exclude = "privileges")
+@EqualsAndHashCode(exclude = "privileges")
+@Getter
+@Setter
 @Table(name = "role")
 public class Role {
     @Id

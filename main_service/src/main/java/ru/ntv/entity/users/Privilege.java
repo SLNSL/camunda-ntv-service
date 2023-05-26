@@ -8,7 +8,10 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@ToString(exclude = "roles")
+@EqualsAndHashCode(exclude = "roles")
+@Getter
+@Setter
 @Table(name = "privilege")
 public class Privilege implements GrantedAuthority {
     @Id
