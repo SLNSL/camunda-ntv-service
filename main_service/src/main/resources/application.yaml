@@ -1,25 +1,21 @@
-server:
-  port: 21413
-  servlet:
-    context-path: /
-    session:
-      timeout: 600s
+#server:
+#  port: 21413
+#  servlet:
+#    context-path: /
+#    session:
+#      timeout: 600s
+
+camunda.bpm.admin-user:
+  id: demo
+  password: demo
 
 spring:
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9092
   datasource:
-    people:
-      url: jdbc:postgresql://localhost:5432/users
-      username: postgres
-      password: nnik1320
-      driver-class-name: org.postgresql.Driver
-    articles:
-      url: jdbc:postgresql://localhost:5432/news
-      username: postgres
-      password: nnik1320
-      driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/users
+    username: postgres
+    password: nnik1320
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update

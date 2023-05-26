@@ -9,11 +9,11 @@ import ru.ntv.entity.articles.Article;
 import ru.ntv.entity.articles.Theme;
 import ru.ntv.entity.users.TelegramUserAndTheme;
 import ru.ntv.entity.users.keys.TelegramUserThemeKey;
-import ru.ntv.repo.article.ArticleRepository;
-import ru.ntv.repo.article.ThemeRepository;
-import ru.ntv.repo.user.TelegramUserAndThemeRepository;
-import ru.ntv.repo.user.TelegramUserRepository;
-import ru.ntv.repo.user.UserRepository;
+import ru.ntv.repo.ArticleRepository;
+import ru.ntv.repo.ThemeRepository;
+import ru.ntv.repo.TelegramUserAndThemeRepository;
+import ru.ntv.repo.TelegramUserRepository;
+import ru.ntv.repo.UserRepository;
 
 import java.util.List;
 

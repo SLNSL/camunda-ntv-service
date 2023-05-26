@@ -16,9 +16,9 @@ import ru.ntv.dto.response.auth.AuthResponse;
 import ru.ntv.entity.users.TelegramUser;
 import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
-import ru.ntv.repo.user.RoleRepository;
-import ru.ntv.repo.user.TelegramUserRepository;
-import ru.ntv.repo.user.UserRepository;
+import ru.ntv.repo.RoleRepository;
+import ru.ntv.repo.TelegramUserRepository;
+import ru.ntv.repo.UserRepository;
 import ru.ntv.security.JwtTokenProvider;
 
 @Service

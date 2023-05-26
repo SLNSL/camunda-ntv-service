@@ -8,9 +8,9 @@ import ru.ntv.entity.articles.Article;
 import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
 import ru.ntv.exception.NotRightRoleException;
-import ru.ntv.repo.article.ArticleRepository;
-import ru.ntv.repo.user.RoleRepository;
-import ru.ntv.repo.user.UserRepository;
+import ru.ntv.repo.ArticleRepository;
+import ru.ntv.repo.RoleRepository;
+import ru.ntv.repo.UserRepository;
 
 
 import java.util.List;

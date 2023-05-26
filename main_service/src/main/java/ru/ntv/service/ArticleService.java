@@ -1,8 +1,6 @@
 package ru.ntv.service;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,9 +16,9 @@ import ru.ntv.etc.DatabaseRole;
 import ru.ntv.exception.ArticleNotFoundException;
 import ru.ntv.dto.response.common.ArticlesResponse;
 import ru.ntv.entity.articles.Article;
-import ru.ntv.repo.article.ArticleRepository;
-import ru.ntv.repo.article.ThemeRepository;
-import ru.ntv.repo.user.UserRepository;
+import ru.ntv.repo.ArticleRepository;
+import ru.ntv.repo.ThemeRepository;
+import ru.ntv.repo.UserRepository;
 
 import java.util.Collection;
 import java.util.List;
@@ -42,11 +40,11 @@ public class ArticleService {
     @Autowired
     private UserRepository userRepository;
 
-    private final Producer<String, ArticleKafkaDTO> producer;
+//    private final Producer<String, ArticleKafkaDTO> producer;
 
-    public ArticleService(Producer<String, ArticleKafkaDTO> producer) {
-        this.producer = producer;
-    }
+//    public ArticleService(Producer<String, ArticleKafkaDTO> producer) {
+//        this.producer = producer;
+//    }
 //    private final KafkaTemplate<String, ArticleKafkaDTO> template;
 
 //    public ArticleService(KafkaTemplate<String, ArticleKafkaDTO>  template) {
@@ -85,21 +83,16 @@ public class ArticleService {
 
         article = articleRepository.findByHeader(articleKafkaDTO.getHeader()).get();
 
-        ProducerRecord<String, ArticleKafkaDTO> record = new ProducerRecord<>(
-                "article-topic",
-                String.valueOf(article.getId()),
-                articleKafkaDTO
-        );
+//        ProducerRecord<String, ArticleKafkaDTO> record = new ProducerRecord<>(
+//                "article-topic",
+//                String.valueOf(article.getId()),
+//                articleKafkaDTO
+//        );
+//
+//        producer.send(record, (recordMetadata, e) -> {
+//            e.printStackTrace();
+//        });
 
-        producer.send(record, (recordMetadata, e) -> {
-            e.printStackTrace();
-        });
-
-
-
-
-
-//        template.send("article-topic", articleKafkaDTO);
 
 
         return article;

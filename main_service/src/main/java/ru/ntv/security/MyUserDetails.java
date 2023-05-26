@@ -12,12 +12,12 @@
 //
 //public class MyUserDetails implements UserDetails {
 //
-//    private String login;
+//    private final String login;
 //
-//    private String password;
+//    private final String password;
 //
 //
-//    private GrantedAuthority authority;
+//    private final GrantedAuthority authority;
 //
 //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -30,11 +30,8 @@
 //        this.authority = authority;
 //    }
 //
-//    public static MyUserDetails build(User user) {
-//
-//        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().getRoleName());
-//
-//        return new MyUserDetails(user.getLogin(), user.getPassword(), authority);
+//    public static UserDetails fromUser(User user){
+//        return new MyUserDetails(user.getLogin(), user.getPassword(), user.getRole().getPrivileges());
 //    }
 //
 //    @Override
