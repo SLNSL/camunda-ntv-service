@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1ne94it" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="Process_14j9p1s" isExecutable="true" camunda:historyTimeToLive="500">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_18ivd4r</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1vn10mp" messageRef="Message_18o9ppc" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_18ivd4r" sourceRef="StartEvent_1" targetRef="Activity_14jw5fz" />
+    <bpmn:endEvent id="Event_12eu7hy">
+      <bpmn:incoming>Flow_04e6o1e</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_12ia5ce" sourceRef="Activity_11h4dmi" targetRef="Activity_01ilcru" />
+    <bpmn:serviceTask id="Activity_11h4dmi" name="Рассылка сообщений" camunda:delegateExpression="#{getNewArticle}">
+      <bpmn:incoming>Flow_0af7p2f</bpmn:incoming>
+      <bpmn:outgoing>Flow_12ia5ce</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0af7p2f" sourceRef="Activity_14jw5fz" targetRef="Activity_11h4dmi" />
+    <bpmn:userTask id="Activity_14jw5fz" name="Получил сообщение">
+      <bpmn:incoming>Flow_18ivd4r</bpmn:incoming>
+      <bpmn:outgoing>Flow_0af7p2f</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_04e6o1e" sourceRef="Activity_01ilcru" targetRef="Event_12eu7hy" />
+    <bpmn:userTask id="Activity_01ilcru" name="Все сообщения разосланы">
+      <bpmn:incoming>Flow_12ia5ce</bpmn:incoming>
+      <bpmn:outgoing>Flow_04e6o1e</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmn:message id="Message_18o9ppc" name="postArticle" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_14j9p1s">
+      <bpmndi:BPMNShape id="Event_0so6wvi_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_180de3b_di" bpmnElement="Activity_14jw5fz">
+        <dc:Bounds x="300" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ao9xgb_di" bpmnElement="Activity_11h4dmi">
+        <dc:Bounds x="510" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_12eu7hy_di" bpmnElement="Event_12eu7hy">
+        <dc:Bounds x="892" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13c6aan_di" bpmnElement="Activity_01ilcru">
+        <dc:Bounds x="700" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_18ivd4r_di" bpmnElement="Flow_18ivd4r">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="300" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12ia5ce_di" bpmnElement="Flow_12ia5ce">
+        <di:waypoint x="610" y="117" />
+        <di:waypoint x="700" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0af7p2f_di" bpmnElement="Flow_0af7p2f">
+        <di:waypoint x="400" y="117" />
+        <di:waypoint x="510" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04e6o1e_di" bpmnElement="Flow_04e6o1e">
+        <di:waypoint x="800" y="117" />
+        <di:waypoint x="892" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

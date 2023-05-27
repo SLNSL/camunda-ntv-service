@@ -12,4 +12,7 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Inte
     Optional<TelegramUser> findByUserId(Integer userId);
 
     void deleteAllByTelegramName(String telegramName);
+
+    Optional<TelegramUser> findByTelegramName(String telegramName);
+
 }

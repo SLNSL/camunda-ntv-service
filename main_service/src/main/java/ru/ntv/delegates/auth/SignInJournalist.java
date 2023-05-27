@@ -63,7 +63,10 @@ public class SignInJournalist implements JavaDelegate {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            log.info(authentication.getName());
 
             final var user = userService.getCurrentUser();
 
@@ -77,6 +80,7 @@ public class SignInJournalist implements JavaDelegate {
 
             delegateExecution.setVariable("accessToken", jwt);
             delegateExecution.setVariable("refreshToken", refreshToken);
+            delegateExecution.setVariable("username", user.getLogin());
         } catch (BadCredentialsException e){
             throw new BpmnError("BadCredentialsException");
         }

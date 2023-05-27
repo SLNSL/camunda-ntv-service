@@ -131,10 +131,7 @@ public class ArticleService {
         article.setText(newArticleRequest.getText());
         article.setPriority(newArticleRequest.getPriority());
         article.setPhoto(newArticleRequest.getPhotoURL());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-
-        article.setJournalistName(userName);
+        article.setJournalistName(newArticleRequest.getJournalistName());
 
         return article;
     }

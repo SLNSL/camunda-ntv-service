@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Table(name = "theme")
-public class Theme {
+public class Theme implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -27,5 +28,5 @@ public class Theme {
             joinColumns = {@JoinColumn(name = "theme_id")},
             inverseJoinColumns = {@JoinColumn(name = "article_id")}
     )
-    private List<Article> articles;
+    private transient List<Article> articles;
 }

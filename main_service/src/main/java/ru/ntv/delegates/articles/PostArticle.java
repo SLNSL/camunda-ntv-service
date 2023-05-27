@@ -26,15 +26,17 @@ public class PostArticle implements JavaDelegate {
         Integer priority = Integer.parseInt((String) delegateExecution.getVariable("Приоритет"));
         String text = (String) delegateExecution.getVariable("Текст");
         String themeIdsString = (String) delegateExecution.getVariable("Темы");
+        String journalistName = (String) delegateExecution.getVariable("username");
         List<Integer> themeIds = Arrays.stream(themeIdsString.split(", "))
                 .map(Integer::parseInt)
                 .toList();
 
         NewArticleRequest newArticleRequest = new NewArticleRequest(themeIds, header, subheader,
-                text, priority, photoUrl);
+                text, priority, photoUrl,journalistName);
 
         Article article = articleService.createArticle(newArticleRequest);
         delegateExecution.setVariable("articleId", article.getId());
+        delegateExecution.setVariable("articleObj", article);
         
     }
 }

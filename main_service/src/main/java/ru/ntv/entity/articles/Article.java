@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
@@ -47,4 +48,13 @@ public class Article implements Serializable {
 
     @Column(name = "journalist_name")
     private String journalistName;
+
+
+    @Override
+    public String toString(){
+        return "<b>" + header + "</b>" + "\n\n" +
+                "Темы: " + themes.stream().map(Theme::getThemeName).collect(Collectors.joining(", ")) + "\n\n" +
+                subheader + "\n" +
+                text;
+    }
 }

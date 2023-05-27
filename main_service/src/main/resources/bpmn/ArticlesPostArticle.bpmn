@@ -4,9 +4,6 @@
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1r2g3ql</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:endEvent id="Event_0ll5srz">
-      <bpmn:incoming>Flow_0866dd3</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1r2g3ql" sourceRef="StartEvent_1" targetRef="Activity_0n07ueg" />
     <bpmn:serviceTask id="Activity_1fggpwp" name="Процесс Авторизации" camunda:delegateExpression="#{signInJournalist}">
       <bpmn:incoming>Flow_01ipj2e</bpmn:incoming>
@@ -55,8 +52,13 @@
       <bpmn:incoming>Flow_1w86pzy</bpmn:incoming>
       <bpmn:outgoing>Flow_0866dd3</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:endEvent id="Event_0ll5srz">
+      <bpmn:incoming>Flow_0866dd3</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0phz8zx" messageRef="Message_279uipi" camunda:delegateExpression="#{sendNewArticleMessage}" />
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmn:error id="Error_0oilcqu" name="bad" />
+  <bpmn:message id="Message_279uipi" name="postArticle" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="postarticles">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
@@ -89,7 +91,7 @@
       <bpmndi:BPMNShape id="Activity_1qxxqwx_di" bpmnElement="Activity_1mflwmm">
         <dc:Bounds x="1100" y="257" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ll5srz_di" bpmnElement="Event_0ll5srz">
+      <bpmndi:BPMNShape id="Event_1dvai3k_di" bpmnElement="Event_0ll5srz">
         <dc:Bounds x="1312" y="279" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0qybzvu_di" bpmnElement="Event_0qybzvu">
