@@ -32,16 +32,6 @@
       <bpmn:outgoing>Flow_05d4mjn</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_05d4mjn" sourceRef="Activity_1xmwlkt" targetRef="Activity_0n07ueg" />
-    <bpmn:sequenceFlow id="Flow_1w86pzy" sourceRef="Activity_1pjmjta" targetRef="Activity_1mflwmm" />
-    <bpmn:serviceTask id="Activity_1pjmjta" name="Публикация артикля" camunda:delegateExpression="#{postArticle}">
-      <bpmn:incoming>Flow_0godbzu</bpmn:incoming>
-      <bpmn:outgoing>Flow_1w86pzy</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:boundaryEvent id="Event_082t7m4" attachedToRef="Activity_1pjmjta">
-      <bpmn:outgoing>Flow_1hmbxmn</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_0zhyxjl" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_1hmbxmn" sourceRef="Event_082t7m4" targetRef="Activity_14moxer" />
     <bpmn:sequenceFlow id="Flow_0igkjcz" sourceRef="Activity_14moxer" targetRef="Activity_0qp59f3" />
     <bpmn:userTask id="Activity_14moxer" name="Ошибка публикации">
       <bpmn:incoming>Flow_1hmbxmn</bpmn:incoming>
@@ -56,6 +46,16 @@
       <bpmn:incoming>Flow_0866dd3</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0phz8zx" messageRef="Message_279uipi" camunda:delegateExpression="#{sendNewArticleMessage}" />
     </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_1pjmjta" name="Публикация артикля" camunda:delegateExpression="#{postArticle}">
+      <bpmn:incoming>Flow_0godbzu</bpmn:incoming>
+      <bpmn:outgoing>Flow_1w86pzy</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1w86pzy" sourceRef="Activity_1pjmjta" targetRef="Activity_1mflwmm" />
+    <bpmn:boundaryEvent id="Event_082t7m4" attachedToRef="Activity_1pjmjta">
+      <bpmn:outgoing>Flow_1hmbxmn</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0zhyxjl" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1hmbxmn" sourceRef="Event_082t7m4" targetRef="Activity_14moxer" />
   </bpmn:process>
   <bpmn:error id="Error_0oilcqu" name="bad" />
   <bpmn:message id="Message_279uipi" name="postArticle" />

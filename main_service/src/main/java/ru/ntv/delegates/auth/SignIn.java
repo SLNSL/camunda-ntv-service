@@ -30,7 +30,6 @@ import java.util.Objects;
 
 @Component
 @Named
-@Deprecated
 public class SignIn implements JavaDelegate {
 
     @Value("${app.jwtSecret}")
@@ -69,6 +68,7 @@ public class SignIn implements JavaDelegate {
 
         delegateExecution.setVariable("accessToken", jwt);
         delegateExecution.setVariable("refreshToken", refreshToken);
+        delegateExecution.setVariable("username", username);
         } catch (BadCredentialsException e){
             throw new BpmnError("BadCredentialsException");
         }

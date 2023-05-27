@@ -56,32 +56,10 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
 
-    @Transactional
     public Article createArticle(NewArticleRequest newArticleRequest) {
 
         Article article = convertNewArticleRequestToArticle(newArticleRequest);
         article = articleRepository.save(article);
-
-        ArticleKafkaDTO articleKafkaDTO = new ArticleKafkaDTO();
-        articleKafkaDTO.setHeader(newArticleRequest.getHeader());
-        articleKafkaDTO.setSubheader(newArticleRequest.getSubheader());
-        articleKafkaDTO.setText(newArticleRequest.getText());
-        articleKafkaDTO.setPhotoURL(newArticleRequest.getPhotoURL());
-        articleKafkaDTO.setThemes(
-                article.getThemes().stream().map(Converter::themeToDtoConverter).collect(Collectors.toList())
-        );
-
-        article = articleRepository.findByHeader(articleKafkaDTO.getHeader()).get();
-
-//        ProducerRecord<String, ArticleKafkaDTO> record = new ProducerRecord<>(
-//                "article-topic",
-//                String.valueOf(article.getId()),
-//                articleKafkaDTO
-//        );
-//
-//        producer.send(record, (recordMetadata, e) -> {
-//            e.printStackTrace();
-//        });
 
 
 
