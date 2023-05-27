@@ -1,0 +1,26 @@
+{
+  "components": [
+    {
+      "label": "Темы (id через запятую)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0lilq0d",
+        "columns": null
+      },
+      "id": "Field_0fwmr9q",
+      "key": "Темы",
+      "validate": {
+        "pattern": "^\\d+(?:, \\d+)*$"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "subtothemes",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.11.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 8
+}

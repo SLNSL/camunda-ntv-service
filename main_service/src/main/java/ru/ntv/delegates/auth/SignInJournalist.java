@@ -1,7 +1,5 @@
 package ru.ntv.delegates.auth;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -12,20 +10,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import ru.ntv.etc.DatabaseRole;
 import ru.ntv.security.JwtTokenProvider;
-import ru.ntv.security.MyUserDetailsService;
 import ru.ntv.service.UserService;
 
 import javax.inject.Named;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -64,11 +54,9 @@ public class SignInJournalist implements JavaDelegate {
                     new UsernamePasswordAuthenticationToken(username, password)
             );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
             log.info(authentication.getName());
 
-            final var user = userService.getCurrentUser();
+            final var user = userService.findByLogin(username);
 
             log.info(user.getRole().getRoleName());
             if (Objects.equals(user.getRole().getRoleName(), DatabaseRole.ROLE_CLIENT.name())) {

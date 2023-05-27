@@ -23,17 +23,11 @@ public class ThemesController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("subscribe")
-    ResponseEntity<?> subscribeToThemes(@RequestParam List<Integer> theme_ids){
-        themesService.subscribeToThemes(theme_ids);
 
-        return ResponseEntity.ok("OK");
-    }
-
-    @PostMapping("unsubscribe")
-    ResponseEntity<?> unsubscribeFromAllThemes(){
-        themesService.unsubscribeFromAllThemes();
-
-        return ResponseEntity.ok("OK");
-    }
+//    @PostMapping("unsubscribe")
+//    ResponseEntity<?> unsubscribeFromAllThemes(){
+//        themesService.unsubscribeFromAllThemes();
+//
+//        return ResponseEntity.ok("OK");
+//    }
 }

@@ -2,6 +2,8 @@ package ru.ntv.service;
 
 
 
+import lombok.extern.log4j.Log4j2;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.request.journalist.CreateThemeRequest;
@@ -11,11 +13,13 @@ import ru.ntv.entity.articles.Theme;
 import ru.ntv.entity.users.EmailUserTheme;
 import ru.ntv.entity.users.TelegramUserAndTheme;
 import ru.ntv.entity.users.keys.TelegramUserThemeKey;
+import ru.ntv.exception.NotRegisteredException;
 import ru.ntv.repo.*;
 
 import java.util.List;
 
 @Service
+@Log4j2
 public class ThemesService {
     private final ThemeRepository themeRepository;
     private final TelegramUserAndThemeRepository telegramUserAndThemeRepository;
@@ -70,13 +74,15 @@ public class ThemesService {
         themeRepository.delete(theme);
     }
     
+
     @Transactional
-    public void subscribeToThemes(List<Integer> themeIds){
-        final var user = userService
-                .getCurrentUser();
-        final var telegramUser = telegramUserRepository
-                .findByUserId(user.getId())
-                .get();
+    public void subscribeToThemes(List<Integer> themeIds, String username){
+
+
+        final var user = userService.findByLogin(username);
+        final var telegramUser = telegramUserRepository.findByUserId(user.getId()).get();
+        log.error(telegramUser.getTelegramChatId());
+        if (telegramUser.getTelegramChatId() == null) throw new BpmnError("NotRegistered");
 
         final var themes = themeRepository.findAllById(themeIds);
 
@@ -88,14 +94,16 @@ public class ThemesService {
             TelegramUserAndTheme telegramUserAndTheme = new TelegramUserAndTheme();
             telegramUserAndTheme.setId(telegramUserThemeKey);
             telegramUserAndThemeRepository.save(telegramUserAndTheme);
-            
+            if (null == null) throw new RuntimeException();
             final var emailUserTheme = new EmailUserTheme(user.getId(), theme.getId());
             emailUserThemeRepository.save(emailUserTheme);
+
         });
+
     }
 
-    public void unsubscribeFromAllThemes() {
-        final var user = userService.getCurrentUser();
+    public void unsubscribeFromAllThemes(String username) {
+        final var user = userService.findByLogin(username);
         final var telegramUser = telegramUserRepository
                 .findByUserId(user.getId())
                 .get();
