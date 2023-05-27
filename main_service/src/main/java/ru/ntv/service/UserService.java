@@ -1,6 +1,7 @@
 package ru.ntv.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.response.boss.JournalistResponse;
@@ -11,7 +12,6 @@ import ru.ntv.exception.NotRightRoleException;
 import ru.ntv.repo.ArticleRepository;
 import ru.ntv.repo.RoleRepository;
 import ru.ntv.repo.UserRepository;
-
 
 import java.util.List;
 import java.util.Objects;
@@ -32,24 +32,23 @@ public class UserService {
 
     @Transactional(transactionManager = "transactionManager")
     public String dismissJournalist(int idJournalist){
+        final var journalist = userRepository.findById(idJournalist).orElseThrow();
+        if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name()))
+            throw new NotRightRoleException("Это не журналист");
 
-            final var journalist = userRepository.findById(idJournalist).orElseThrow();
-            if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name()))
-                throw new NotRightRoleException("Это не журналист");
+        journalist.setRole(
+            roleRepository.findRoleByRoleName(
+                DatabaseRole.ROLE_CLIENT.name()
+            )
+        );
 
-            journalist.setRole(
-                    roleRepository.findRoleByRoleName(
-                            DatabaseRole.ROLE_CLIENT.name()
-                    )
-            );
+        List<Article> articles = articleRepository.findAllByJournalistName(journalist.getLogin());
+        articles.forEach(article -> article.setJournalistName(null));
+        
+        userRepository.save(journalist);
+        articleRepository.saveAll(articles);
 
-            List<Article> articles = articleRepository.findAllByJournalistName(journalist.getLogin());
-            articles.forEach(article -> article.setJournalistName(null));
-            
-            userRepository.save(journalist);
-            articleRepository.saveAll(articles);
-
-            return "уволен";
+        return "уволен";
     }
 
 
@@ -74,5 +73,14 @@ public class UserService {
                 user.getId(),
                 user.getLogin()
         );
+    }
+    
+    public User getCurrentUser(){
+        final var userName = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return userRepository.findByLogin(userName).get();
     }
 }

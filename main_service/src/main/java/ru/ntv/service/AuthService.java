@@ -1,6 +1,7 @@
 package ru.ntv.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ntv.dto.request.auth.NewUser;
 import ru.ntv.dto.request.auth.OldUser;
 import ru.ntv.dto.response.auth.AuthResponse;
+import ru.ntv.entity.users.EmailUser;
 import ru.ntv.entity.users.TelegramUser;
 import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
+import ru.ntv.repo.EmailUserRepository;
 import ru.ntv.repo.RoleRepository;
 import ru.ntv.repo.TelegramUserRepository;
 import ru.ntv.repo.UserRepository;
@@ -41,6 +44,9 @@ public class AuthService {
 
     @Autowired
     TelegramUserRepository telegramUserRepository;
+    
+    @Autowired
+    EmailUserRepository emailUserRepository;
 
     public AuthResponse signIn(OldUser user) throws BadCredentialsException {
         final var response = new AuthResponse();
@@ -54,7 +60,7 @@ public class AuthService {
         final var refreshToken = jwtUtils.generateRefreshTokenFromAuthentication(authentication);
         response.setJwt("Bearer " + jwt);
         response.setRefreshToken(refreshToken);
-        response.setMessage("Для пользования ботом необходимо отправить боту /start и подписаться на темы");
+        response.setMessage("Хотите получать последние новости? Отправьте нашему телеграм боту команду /start и подпишитесь на темы");
 
         return response;
     }
@@ -65,11 +71,8 @@ public class AuthService {
         
         if (userRepository.existsByLogin(newUser.getUsername())) {
             response.setErrorMessage("This login is already taken");
-            return ResponseEntity
-                    .badRequest()
-                    .body(response);
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
-
 
         // Create new user's account
         final var user = new User();
@@ -82,14 +85,14 @@ public class AuthService {
         );
         userRepository.save(user);
 
-
         final var telegramUser = new TelegramUser();
         telegramUser.setTelegramName(newUser.getTelegram_name());
         telegramUser.setUserId(user.getId());
         telegramUserRepository.save(telegramUser);
 
-
-
+        final var emailUser = new EmailUser(user.getId(), newUser.getEmail());
+        emailUserRepository.save(emailUser);
+        
         // Sign in
         final var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(newUser.getUsername(), newUser.getPassword())
@@ -100,7 +103,7 @@ public class AuthService {
         final var refreshToken = jwtUtils.generateRefreshTokenFromAuthentication(authentication);
         response.setJwt("Bearer " + jwt);
         response.setRefreshToken(refreshToken);
-        response.setMessage("Для пользования ботом необходимо отправить боту /start и подписаться на темы");
+        response.setMessage("Хотите получать последние новости? Отправьте нашему телеграм боту команду /start и подпишитесь на темы");
 
         return ResponseEntity.ok(response);
     }

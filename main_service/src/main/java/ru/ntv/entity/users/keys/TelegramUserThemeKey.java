@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class TelegramUserThemeKey implements Serializable {
     @Column(name = "telegram_user_id")
     private Integer telegramUserId;
+    
     @Column(name = "theme_id")
     private Integer themeId;
 }

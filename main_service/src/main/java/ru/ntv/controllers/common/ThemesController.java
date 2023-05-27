@@ -29,4 +29,11 @@ public class ThemesController {
 
         return ResponseEntity.ok("OK");
     }
+
+    @PostMapping("unsubscribe")
+    ResponseEntity<?> unsubscribeFromAllThemes(){
+        themesService.unsubscribeFromAllThemes();
+
+        return ResponseEntity.ok("OK");
+    }
 }

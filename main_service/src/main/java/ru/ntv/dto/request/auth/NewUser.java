@@ -15,5 +15,5 @@ public class NewUser implements Serializable {
     @Size(min = 2, max = 255)
     private String password;
     private String telegram_name;
-    private String mail;
+    private String email;
 }

@@ -1,4 +1,4 @@
-package ru.ntv.tg_service.configuration;
+package ru.ntv.mail_service.config;
 
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -9,8 +9,8 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import ru.ntv.tg_service.deserializer.ArticleKafkaDTODeserializer;
-import ru.ntv.tg_service.dto.kafka.ArticleKafkaDTO;
+import ru.ntv.mail_service.deserializer.ArticleKafkaDTODeserializer;
+import ru.ntv.mail_service.dto.kafka.ArticleKafkaDTO;
 
 import java.util.HashMap;
 import java.util.Map;

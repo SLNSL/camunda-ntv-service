@@ -1,4 +1,26 @@
+server:
+  port: 9100
+  servlet:
+    context-path: /
+    session:
+      timeout: 600s
+
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:6000/users
+    username: postgres
+    password: nnik1320
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
   mail:
     host: smtp.mail.ru
     username: ntv.digest@mail.ru
