@@ -1,0 +1,94 @@
+{
+  "components": [
+    {
+      "label": "Заголовок",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0ayniby",
+        "columns": null
+      },
+      "id": "Field_07vokp6",
+      "key": "Заголовок",
+      "validate": {
+        "minLength": 5
+      }
+    },
+    {
+      "label": "Подзаголовок",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0iycwvk",
+        "columns": null
+      },
+      "id": "Field_0lcjyrm",
+      "key": "Подзаголовок",
+      "validate": {
+        "minLength": 5
+      }
+    },
+    {
+      "label": "Темы (id через запятую)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_02en16v",
+        "columns": null
+      },
+      "id": "Field_0bj7zam",
+      "key": "Темы",
+      "validate": {
+        "pattern": "^\\d+(?:, \\d+)*$",
+        "minLength": 1
+      },
+      "disabled": false,
+      "defaultValue": "Например \"1, 6, 42\""
+    },
+    {
+      "label": "Photo Url",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0p83obb",
+        "columns": null
+      },
+      "id": "Field_042yal0",
+      "key": "PhotoUrl",
+      "validate": {
+        "minLength": 5
+      }
+    },
+    {
+      "label": "Приоритет",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0o0usjv",
+        "columns": null
+      },
+      "id": "Field_0tkd264",
+      "key": "Приоритет",
+      "validate": {
+        "pattern": "^[123]+$"
+      }
+    },
+    {
+      "label": "Текст",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0o15f6b",
+        "columns": null
+      },
+      "id": "Field_15um8s4",
+      "key": "Текст",
+      "validate": {
+        "minLength": 5
+      }
+    }
+  ],
+  "type": "default",
+  "id": "postArticle",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.11.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 8
+}

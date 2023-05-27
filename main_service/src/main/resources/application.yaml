@@ -9,6 +9,11 @@ camunda.bpm.admin-user:
   id: demo
   password: demo
 
+schema.camunda:
+  bpm:
+    database:
+      schema-name: camunda
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/users

@@ -2,6 +2,7 @@ package ru.ntv.delegates.auth;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.log4j.Log4j2;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -12,10 +13,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
 import ru.ntv.security.JwtTokenProvider;
+import ru.ntv.security.MyUserDetailsService;
 import ru.ntv.service.UserService;
 
 import javax.inject.Named;
@@ -29,6 +31,7 @@ import java.util.Objects;
 
 @Component
 @Named
+@Log4j2
 public class SignInJournalist implements JavaDelegate {
 
     @Value("${app.jwtSecret}")
@@ -62,7 +65,9 @@ public class SignInJournalist implements JavaDelegate {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            final var user = (User) authentication.getPrincipal();
+            final var user = userService.getCurrentUser();
+
+            log.info(user.getRole().getRoleName());
             if (Objects.equals(user.getRole().getRoleName(), DatabaseRole.ROLE_CLIENT.name())) {
                 throw new BpmnError("BadCredentialsException");
             }

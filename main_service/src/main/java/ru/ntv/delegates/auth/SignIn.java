@@ -30,6 +30,7 @@ import java.util.Objects;
 
 @Component
 @Named
+@Deprecated
 public class SignIn implements JavaDelegate {
 
     @Value("${app.jwtSecret}")
