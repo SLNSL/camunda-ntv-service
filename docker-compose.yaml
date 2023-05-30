@@ -1,55 +1,18 @@
 version: '3'
 
 services:
-  articles_db:
+  lab4_db:
     image: postgres
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: nnik1320
-      POSTGRES_DB: news
+      POSTGRES_DB: ntv
     ports:
-      - "5000:5432"
+      - "6050:5432"
     volumes:
-      - articles_data:/var/lib/postgresql/data
-  people_db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: nnik1320
-      POSTGRES_DB: users
-    ports:
-      - "6000:5432"
-    volumes:
-      - people_data:/var/lib/postgresql/data
-  zookeeper:
-    image: 'wurstmeister/zookeeper:latest'
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
-    networks:
-      - kafka_net
-  kafka:
-    image: 'wurstmeister/kafka:latest'
-    container_name: kafka
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_ADVERTISED_PORT: 9092
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - kafka_net
+      - lab4_volume1:/var/lib/postgresql/data
+
 
 volumes:
-  articles_data:
-  people_data:
-
-networks:
-  kafka_net:
-    driver: bridge
+  lab4_volume1:

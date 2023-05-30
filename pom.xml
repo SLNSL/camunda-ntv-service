@@ -21,8 +21,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mail_service</module>
-        <module>tg_service</module>
         <module>main_service</module>
     </modules>
 </project>
