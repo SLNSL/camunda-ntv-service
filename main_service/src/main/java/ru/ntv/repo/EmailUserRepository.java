@@ -5,4 +5,6 @@ import ru.ntv.entity.users.EmailUser;
 
 public interface EmailUserRepository extends JpaRepository<EmailUser, Integer> {
     void deleteAllByUserId(int id);
+    EmailUser findByUserId(Integer userId);
+
 }

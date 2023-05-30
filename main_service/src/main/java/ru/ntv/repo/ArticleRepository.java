@@ -6,6 +6,7 @@ import ru.ntv.entity.articles.Article;
 import ru.ntv.entity.articles.Theme;
 import ru.ntv.entity.users.User;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +22,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findAllByJournalistName(String name);
 
     Optional<Article> findByHeader(String header);
+
+    List<Article> findAllByCreationDateBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
+
 }

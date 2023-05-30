@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,12 @@ import ru.ntv.etc.DatabaseRole;
 import ru.ntv.exception.ArticleNotFoundException;
 import ru.ntv.dto.response.common.ArticlesResponse;
 import ru.ntv.entity.articles.Article;
-import ru.ntv.repo.ArticleRepository;
-import ru.ntv.repo.ThemeRepository;
-import ru.ntv.repo.UserRepository;
+import ru.ntv.repo.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,8 +38,14 @@ public class ArticleService {
     @Autowired
     private UserRepository userRepository;
 
-    //@Autowired
-    //private Producer<String, ArticleKafkaDTO> producer;
+    @Autowired
+    private EmailUserThemeRepository emailUserThemeRepository;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private EmailUserRepository emailUserRepository;
 
     public Optional<List<Article>> findByHeader(String header){
         return articleRepository.findAllByHeaderContainingIgnoreCase(header);
@@ -122,5 +127,67 @@ public class ArticleService {
         if (!Objects.equals(journalist.getRole().getRoleName(), DatabaseRole.ROLE_JOURNALIST.name())) throw new RuntimeException(); //todo throw custom Exception that isn't boss
 
         return articleRepository.findAllByJournalistName(journalist.getLogin());
+    }
+
+    public List<Article> getArticlesForToday() {
+        LocalDateTime startDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
+        LocalDateTime endDateTime = LocalDateTime.now();
+
+        return articleRepository.findAllByCreationDateBetween(startDateTime, endDateTime);
+    }
+
+
+    @Scheduled(fixedRate = 30 * 1000)
+    public void sendDigest(){
+
+        log.error("ОТПРАВКА");
+        List<Article> storage = getArticlesForToday();
+        System.out.println(storage.size());
+        if (storage.size() == 0) return;
+        HashMap<Integer, List<Article>> articlesByThemeIds = new HashMap<>();
+        HashMap<Integer, Set<Article>> articlesByUserId = new HashMap<>();
+
+        storage.forEach(article -> {
+            final var themeIds = article
+                    .getThemes()
+                    .stream()
+                    .map(Theme::getId)
+                    .toList();
+
+            themeIds.forEach(themeId -> {
+                if (!articlesByThemeIds.containsKey(themeId)){
+                    articlesByThemeIds.put(themeId, new ArrayList<>());
+                }
+                articlesByThemeIds.get(themeId).add(article);
+            });
+        });
+
+        emailUserThemeRepository.findAll().forEach(subscription -> {
+            final var userId = subscription.getUserId();
+            final var themeId = subscription.getThemeId();
+
+            if (!articlesByUserId.containsKey(userId)){
+                articlesByUserId.put(userId, new HashSet<>());
+            }
+            System.out.println(userId);
+            System.out.println(themeId);
+            System.out.println(articlesByUserId.get(userId));
+            System.out.println(articlesByThemeIds.get(themeId));
+            articlesByUserId.get(userId).addAll(
+                    articlesByThemeIds.get(themeId) == null ?
+                    new ArrayList<>()
+                    :
+                    articlesByThemeIds.get(themeId)
+            );
+        });
+
+        articlesByUserId.forEach((userId, articles) ->
+                emailService.sendArticles(
+                        emailUserRepository.findByUserId(userId).getEmail(),
+                        articles
+                )
+        );
+
+        storage.clear();
     }
 }

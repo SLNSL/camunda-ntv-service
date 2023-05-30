@@ -1,0 +1,24 @@
+{
+  "components": [
+    {
+      "label": "Id",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0v66r1b",
+        "columns": null
+      },
+      "id": "Field_0p0uxre",
+      "key": "id",
+      "defaultValue": "1"
+    }
+  ],
+  "type": "default",
+  "id": "articleIdInput",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.11.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 8
+}

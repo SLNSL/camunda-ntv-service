@@ -33,6 +33,16 @@ spring:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
 
+  mail:
+    host: smtp.mail.ru
+    username: ntv.digest@mail.ru
+    password: dfGL2tWRrD8fjGJhcQTe
+    port: 465
+    protocol: smtps
+
+mail:
+  debug: true
+
 management:
   endpoints:
     web:

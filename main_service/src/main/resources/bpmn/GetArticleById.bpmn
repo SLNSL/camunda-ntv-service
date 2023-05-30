@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14t7m9r" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
   <bpmn:process id="getArticleById" name="GetArticleById" isExecutable="true" camunda:historyTimeToLive="600">
-    <bpmn:userTask id="Activity_0qp59f3" name="Ввести id" camunda:formRef="postTheme" camunda:formRefBinding="latest">
+    <bpmn:userTask id="Activity_0qp59f3" name="Ввести id" camunda:formRef="articleIdInput" camunda:formRefBinding="latest">
       <bpmn:incoming>Flow_0igkjcz</bpmn:incoming>
       <bpmn:incoming>Flow_093d2cc</bpmn:incoming>
       <bpmn:outgoing>Flow_0godbzu</bpmn:outgoing>
@@ -19,7 +19,7 @@
       <bpmn:incoming>Flow_1w86pzy</bpmn:incoming>
       <bpmn:outgoing>Flow_0866dd3</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_1pjmjta" name="Поиск артикля" camunda:delegateExpression="#{articleById}">
+    <bpmn:serviceTask id="Activity_1pjmjta" name="Поиск артикля" camunda:delegateExpression="#{getArticleById}">
       <bpmn:incoming>Flow_0godbzu</bpmn:incoming>
       <bpmn:outgoing>Flow_1w86pzy</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -72,6 +72,10 @@
         <di:waypoint x="343" y="113" />
         <di:waypoint x="343" y="250" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_093d2cc_di" bpmnElement="Flow_093d2cc">
+        <di:waypoint x="188" y="290" />
+        <di:waypoint x="293" y="290" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0godbzu_di" bpmnElement="Flow_0godbzu">
         <di:waypoint x="393" y="290" />
         <di:waypoint x="483" y="290" />
@@ -87,10 +91,6 @@
       <bpmndi:BPMNEdge id="Flow_0866dd3_di" bpmnElement="Flow_0866dd3">
         <di:waypoint x="793" y="290" />
         <di:waypoint x="905" y="290" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_093d2cc_di" bpmnElement="Flow_093d2cc">
-        <di:waypoint x="188" y="290" />
-        <di:waypoint x="293" y="290" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
