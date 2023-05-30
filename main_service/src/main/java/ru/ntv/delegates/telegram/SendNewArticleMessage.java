@@ -1,4 +1,4 @@
-package ru.ntv.delegates.articles;
+package ru.ntv.delegates.telegram;
 
 import lombok.extern.log4j.Log4j2;
 import org.camunda.bpm.engine.delegate.DelegateExecution;

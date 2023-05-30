@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "label": "Имя",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0ezjv1d",
+        "columns": null
+      },
+      "id": "Field_0tckf3i",
+      "key": "themeName"
+    }
+  ],
+  "type": "default",
+  "id": "postTheme",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.11.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 8
+}

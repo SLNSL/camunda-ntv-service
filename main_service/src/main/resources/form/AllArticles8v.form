@@ -1,0 +1,24 @@
+{
+  "components": [
+    {
+      "label": "Text area",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_134gqe3",
+        "columns": null
+      },
+      "id": "Field_1twzjuj",
+      "key": "field_0aewfr2",
+      "defaultValue": "${articles}"
+    }
+  ],
+  "type": "default",
+  "id": "allarticles8",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.11.0"
+  },
+  "schemaVersion": 8
+}

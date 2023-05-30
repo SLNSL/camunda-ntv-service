@@ -1,5 +1,6 @@
 package ru.ntv.entity.articles;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
@@ -44,17 +45,23 @@ public class Article implements Serializable {
 
     @Column(name = "creation_date")
     @CreationTimestamp
+    @JsonIgnore
     private LocalDateTime creationDate;
 
     @Column(name = "journalist_name")
     private String journalistName;
 
 
-    @Override
-    public String toString(){
-        return "<b>" + header + "</b>" + "\n\n" +
+    public String toString(boolean isHtml){
+        if (isHtml)
+            return "<b>" + header + "</b>" + "\n\n" +
                 "Темы: " + themes.stream().map(Theme::getThemeName).collect(Collectors.joining(", ")) + "\n\n" +
                 subheader + "\n" +
                 text;
+        else
+            return  header + "\n\n" +
+                    "Темы: " + themes.stream().map(Theme::getThemeName).collect(Collectors.joining(", ")) + "\n\n" +
+                    subheader + "\n" +
+                    text;
     }
 }

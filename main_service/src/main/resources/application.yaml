@@ -1,16 +1,18 @@
-#server:
-#  port: 21413
-#  servlet:
-#    context-path: /
-#    session:
-#      timeout: 600s
+server:
+  port: 21413
+  servlet:
+    context-path: /
+    session:
+      timeout: 600s
 bot:
   name: NTV
   token: 6116759525:AAGK8tzJijJbOLR5iGArE5c-rhHa4wVpyXg
 
-camunda.bpm.admin-user:
-  id: demo
-  password: demo
+camunda:
+  bpm:
+    admin-user:
+      id: demo
+      password: demo
 
 
 spring:

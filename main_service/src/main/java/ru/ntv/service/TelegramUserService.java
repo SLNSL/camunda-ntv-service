@@ -45,7 +45,7 @@ public class TelegramUserService {
                 TelegramUser telegramUser = telegramUserRepository.findById(telegramUserAndTheme.getId().getTelegramUserId()).get();
                 if (usersGetNew.contains(telegramUser.getTelegramChatId())) return;
                 sendMessage.setChatId(telegramUser.getTelegramChatId());
-                String message = article.toString();
+                String message = article.toString(true);
                 InputFile photo = new InputFile(article.getPhoto());
 
                 SendPhoto sendPhoto = new SendPhoto(telegramUser.getTelegramChatId().toString(), photo);
