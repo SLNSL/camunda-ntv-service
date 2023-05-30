@@ -137,7 +137,7 @@ public class ArticleService {
     }
 
 
-    @Scheduled(fixedRate = 30 * 1000)
+//    @Scheduled(cron = "0 0 23 * * *")
     public void sendDigest(){
 
         log.error("ОТПРАВКА");
