@@ -5,10 +5,8 @@ import lombok.extern.log4j.Log4j2;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import ru.ntv.dto.request.journalist.CreateThemeRequest;
 import ru.ntv.dto.response.common.ThemesResponse;
 import ru.ntv.entity.articles.Article;
@@ -16,10 +14,8 @@ import ru.ntv.entity.articles.Theme;
 import ru.ntv.entity.users.EmailUserTheme;
 import ru.ntv.entity.users.TelegramUserAndTheme;
 import ru.ntv.entity.users.keys.TelegramUserThemeKey;
-import ru.ntv.exception.NotRegisteredException;
 import ru.ntv.repo.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service

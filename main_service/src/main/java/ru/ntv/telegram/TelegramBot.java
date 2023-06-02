@@ -10,8 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.ntv.entity.users.TelegramUser;
 import ru.ntv.repo.TelegramUserRepository;
-import ru.ntv.service.TelegramUserService;
-
 
 import java.util.Objects;
 
@@ -20,6 +18,7 @@ public class TelegramBot extends TelegramLongPollingBot{
 
     @Autowired
     TelegramUserRepository telegramUserRepository;
+    
     @Value("${bot.name}")
     private String botUsername;
 
@@ -61,6 +60,4 @@ public class TelegramBot extends TelegramLongPollingBot{
     public String getBotUsername() {
         return botUsername;
     }
-
-
 }

@@ -1,0 +1,27 @@
+{
+  "components": [
+    {
+      "label": "Journalist ID",
+      "type": "number",
+      "layout": {
+        "row": "Row_0sm0loy",
+        "columns": null
+      },
+      "id": "Field_1fq0gyv",
+      "key": "id",
+      "validate": {
+        "required": true,
+        "min": 1
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_06kkx0d",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.11.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 8
+}

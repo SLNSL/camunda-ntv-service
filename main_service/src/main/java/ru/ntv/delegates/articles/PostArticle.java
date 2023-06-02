@@ -10,7 +10,6 @@ import ru.ntv.service.ArticleService;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class PostArticle implements JavaDelegate {
@@ -37,6 +36,5 @@ public class PostArticle implements JavaDelegate {
         Article article = articleService.createArticle(newArticleRequest);
         delegateExecution.setVariable("articleId", article.getId());
         delegateExecution.setVariable("articleObj", article);
-        
     }
 }

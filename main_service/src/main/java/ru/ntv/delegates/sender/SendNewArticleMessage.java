@@ -5,8 +5,6 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Named;
-
 @Component
 @Log4j2
 public class SendNewArticleMessage implements JavaDelegate {

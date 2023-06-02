@@ -1,18 +1,13 @@
 package ru.ntv.delegates.articles;
 
 
-import camundajar.impl.com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.ntv.dto.response.common.ArticlesResponse;
-import ru.ntv.entity.articles.Article;
 import ru.ntv.service.ArticleService;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 @Component
 @Log4j2

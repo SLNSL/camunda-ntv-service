@@ -17,7 +17,6 @@ import ru.ntv.repo.RoleRepository;
 import ru.ntv.repo.TelegramUserRepository;
 import ru.ntv.repo.UserRepository;
 import ru.ntv.security.JwtTokenProvider;
-import ru.ntv.service.AuthService;
 
 
 @Component
@@ -58,13 +57,10 @@ public class SignUp implements JavaDelegate {
         );
         userRepository.save(user);
 
-
         final var telegramUser = new TelegramUser();
         telegramUser.setTelegramName(telegramName);
         telegramUser.setUserId(user.getId());
         telegramUserRepository.save(telegramUser);
-
-
 
         // Sign in
         final var authentication = authenticationManager.authenticate(

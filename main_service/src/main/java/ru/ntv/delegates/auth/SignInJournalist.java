@@ -41,11 +41,9 @@ public class SignInJournalist implements JavaDelegate {
 
     @Autowired
     AuthenticationManager authenticationManager;
-
-
+    
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-
         try {
             String username = (String) delegateExecution.getVariable("username");
             String password = (String) delegateExecution.getVariable("password");
@@ -73,6 +71,4 @@ public class SignInJournalist implements JavaDelegate {
             throw new BpmnError("BadCredentialsException");
         }
     }
-
-
 }

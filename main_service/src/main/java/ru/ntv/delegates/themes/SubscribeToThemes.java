@@ -9,7 +9,6 @@ import ru.ntv.service.ThemesService;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Log4j2
@@ -23,7 +22,7 @@ public class SubscribeToThemes implements JavaDelegate {
         String themesIdString = (String) delegateExecution.getVariable("Темы");
         String username = (String) delegateExecution.getVariable("username");
         List<Integer> themesId = Arrays.stream(themesIdString.split(", ")).map(Integer::parseInt).toList();
+        
         themesService.subscribeToThemes(themesId, username);
-
     }
 }

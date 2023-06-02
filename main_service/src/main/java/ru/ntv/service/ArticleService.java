@@ -4,26 +4,19 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.ntv.dto.Converter;
-import ru.ntv.dto.kafka.ArticleKafkaDTO;
 import ru.ntv.dto.request.journalist.NewArticleRequest;
+import ru.ntv.dto.response.common.ArticlesResponse;
+import ru.ntv.entity.articles.Article;
 import ru.ntv.entity.articles.Theme;
 import ru.ntv.etc.DatabaseRole;
 import ru.ntv.exception.ArticleNotFoundException;
-import ru.ntv.dto.response.common.ArticlesResponse;
-import ru.ntv.entity.articles.Article;
 import ru.ntv.repo.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -76,9 +69,8 @@ public class ArticleService {
         res.setArticles(articleRepository.findAll(PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "creationDate"))).get().toList());
         return res;
     }
-
-//    @Transactional
-    public Article update(int id, NewArticleRequest req) throws ArticleNotFoundException{
+    
+    public Article update(int id, NewArticleRequest req) throws ArticleNotFoundException {
         final var oldArticleOptional = articleRepository.findById(id);
         if (oldArticleOptional.isEmpty()) throw new ArticleNotFoundException("Article not found!");
 
