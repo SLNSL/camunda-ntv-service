@@ -39,16 +39,16 @@ public class SignInBoss implements JavaDelegate {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
-
+    
             log.info(authentication.getName());
-
+    
             final var user = userService.findByLogin(username);
-
+    
             log.info(user.getRole().getRoleName());
-            if (Objects.equals(user.getRole().getRoleName(), DatabaseRole.ROLE_BOSS.name())) {
+            if (!Objects.equals(user.getRole().getRoleName(), DatabaseRole.ROLE_BOSS.name())) {
                 throw new BpmnError("BadCredentialsException");
             }
-
+    
             final var jwt = jwtTokenProvider.generateJWTFromAuthentication(authentication);
             final var refreshToken = jwtTokenProvider.generateRefreshTokenFromAuthentication(authentication);
 

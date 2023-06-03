@@ -16,7 +16,7 @@
     }
   ],
   "type": "default",
-  "id": "Form_06kkx0d",
+  "id": "dismissJournalistById",
   "exporter": {
     "name": "Camunda Modeler",
     "version": "5.11.0"

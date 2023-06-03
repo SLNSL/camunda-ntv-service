@@ -15,7 +15,7 @@ public class DismissJournalist implements JavaDelegate {
     
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        int journalistId = (int) delegateExecution.getVariable("journalistId");
+        int journalistId = (int) delegateExecution.getVariable("id");
         
         try {
             userService.dismissJournalist(journalistId);

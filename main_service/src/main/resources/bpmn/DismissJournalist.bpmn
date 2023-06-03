@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1hb7ir9" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
-  <bpmn:process id="Process_1stb51h" isExecutable="true">
+  <bpmn:process id="Process_1stb51h" name="Dismiss Journalist" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1cb5oge</bpmn:outgoing>
     </bpmn:startEvent>
@@ -11,7 +11,7 @@
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1cb5oge" sourceRef="StartEvent_1" targetRef="Activity_0twf78d" />
     <bpmn:userTask id="Activity_1396rf2" name="Ошибка авторизации">
-      <bpmn:incoming>Flow_0if0k5l</bpmn:incoming>
+      <bpmn:incoming>Flow_0hn6zdo</bpmn:incoming>
       <bpmn:outgoing>Flow_1hb06d9</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:serviceTask id="Activity_0937nhs" name="Авторизировать" camunda:delegateExpression="#{signInBoss}">
@@ -19,13 +19,12 @@
       <bpmn:outgoing>Flow_0ray2s1</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:boundaryEvent id="Event_0295uu1" attachedToRef="Activity_0937nhs">
-      <bpmn:outgoing>Flow_0if0k5l</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0hn6zdo</bpmn:outgoing>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_1vnf12v" />
     </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_0if0k5l" sourceRef="Event_0295uu1" targetRef="Activity_1396rf2" />
     <bpmn:sequenceFlow id="Flow_1hb06d9" sourceRef="Activity_1396rf2" targetRef="Activity_0twf78d" />
     <bpmn:sequenceFlow id="Flow_0cnby2s" sourceRef="Activity_0twf78d" targetRef="Activity_0937nhs" />
-    <bpmn:userTask id="Activity_0n9n0qb" name="Выбрать журналиста на увольнение" camunda:formRef="dismissJournalist" camunda:formRefBinding="latest">
+    <bpmn:userTask id="Activity_0n9n0qb" name="Выбрать журналиста на увольнение" camunda:formRef="dismissJournalistById" camunda:formRefBinding="latest">
       <bpmn:incoming>Flow_0ray2s1</bpmn:incoming>
       <bpmn:incoming>Flow_0lca077</bpmn:incoming>
       <bpmn:outgoing>Flow_1i9bnf5</bpmn:outgoing>
@@ -50,6 +49,7 @@
     <bpmn:sequenceFlow id="Flow_1fsow73" sourceRef="Event_12ht9h3" targetRef="Activity_12qfr83" />
     <bpmn:sequenceFlow id="Flow_1i9bnf5" sourceRef="Activity_0n9n0qb" targetRef="Activity_1qql534" />
     <bpmn:sequenceFlow id="Flow_19brngw" sourceRef="Activity_1qql534" targetRef="Event_15ubvq2" />
+    <bpmn:sequenceFlow id="Flow_0hn6zdo" sourceRef="Event_0295uu1" targetRef="Activity_1396rf2" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1stb51h">
@@ -83,11 +83,11 @@
         <dc:Bounds x="650" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0295uu1_di" bpmnElement="Event_0295uu1">
-        <dc:Bounds x="512" y="189" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_12ht9h3_di" bpmnElement="Event_12ht9h3">
         <dc:Bounds x="892" y="189" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0295uu1_di" bpmnElement="Event_0295uu1">
+        <dc:Bounds x="512" y="189" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1cb5oge_di" bpmnElement="Flow_1cb5oge">
         <di:waypoint x="215" y="247" />
@@ -101,11 +101,6 @@
         <di:waypoint x="380" y="247" />
         <di:waypoint x="460" y="247" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0if0k5l_di" bpmnElement="Flow_0if0k5l">
-        <di:waypoint x="530" y="189" />
-        <di:waypoint x="530" y="120" />
-        <di:waypoint x="380" y="120" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ray2s1_di" bpmnElement="Flow_0ray2s1">
         <di:waypoint x="560" y="247" />
         <di:waypoint x="650" y="247" />
@@ -113,6 +108,11 @@
       <bpmndi:BPMNEdge id="Flow_0lca077_di" bpmnElement="Flow_0lca077">
         <di:waypoint x="700" y="160" />
         <di:waypoint x="700" y="207" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fsow73_di" bpmnElement="Flow_1fsow73">
+        <di:waypoint x="910" y="189" />
+        <di:waypoint x="910" y="120" />
+        <di:waypoint x="750" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1i9bnf5_di" bpmnElement="Flow_1i9bnf5">
         <di:waypoint x="750" y="247" />
@@ -122,10 +122,10 @@
         <di:waypoint x="930" y="247" />
         <di:waypoint x="1022" y="247" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1fsow73_di" bpmnElement="Flow_1fsow73">
-        <di:waypoint x="910" y="189" />
-        <di:waypoint x="910" y="120" />
-        <di:waypoint x="750" y="120" />
+      <bpmndi:BPMNEdge id="Flow_0hn6zdo_di" bpmnElement="Flow_0hn6zdo">
+        <di:waypoint x="530" y="189" />
+        <di:waypoint x="530" y="120" />
+        <di:waypoint x="380" y="120" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
