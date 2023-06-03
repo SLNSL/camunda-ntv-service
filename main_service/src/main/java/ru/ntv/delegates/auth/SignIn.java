@@ -1,33 +1,27 @@
 package ru.ntv.delegates.auth;
 
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import ru.ntv.etc.DatabasePrivilege;
 import ru.ntv.security.JwtTokenProvider;
 
 import javax.inject.Named;
+import java.util.Arrays;
 
 
 @Component
 @Named
+@Slf4j
 public class SignIn implements JavaDelegate {
-
-    @Value("${app.jwtSecret}")
-    private String jwtSecret;
-
-    @Value("${app.jwtExpirationPeriod}")
-    private long jwtExpirationPeriod;
-
-    @Value("${app.refreshTokenExpirationPeriod}")
-    private long refreshTokenExpirationPeriod;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -49,6 +43,17 @@ public class SignIn implements JavaDelegate {
     
             final var jwt = jwtTokenProvider.generateJWTFromAuthentication(authentication);
             final var refreshToken = jwtTokenProvider.generateRefreshTokenFromAuthentication(authentication);
+            final var ownPrivileges = authentication.getAuthorities();
+
+            Arrays.stream(DatabasePrivilege.values()).sequential()
+                    .map(Enum::name)
+                    .forEach(privilege -> {
+                        final var hasPrivilege = ownPrivileges
+                                .stream()
+                                .anyMatch(p -> p.getAuthority().equals(privilege));
+                        log.info(privilege + ": " + hasPrivilege);
+                        delegateExecution.setVariable(privilege, hasPrivilege);
+                    });
     
             delegateExecution.setVariable("accessToken", jwt);
             delegateExecution.setVariable("refreshToken", refreshToken);

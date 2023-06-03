@@ -4,7 +4,7 @@
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1k5gacf</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_1d28dc6" name="Ввести данные аккаунта" camunda:formRef="signin" camunda:formRefBinding="latest">
+    <bpmn:userTask id="Activity_1d28dc6" name="Войти в аккаунт" camunda:formRef="signin" camunda:formRefBinding="latest">
       <bpmn:incoming>Flow_1k5gacf</bpmn:incoming>
       <bpmn:incoming>Flow_0nt17zw</bpmn:incoming>
       <bpmn:outgoing>Flow_0plrscm</bpmn:outgoing>
@@ -123,13 +123,6 @@
       <bpmndi:BPMNShape id="Event_1lzvcfl_di" bpmnElement="Event_1lzvcfl">
         <dc:Bounds x="1522" y="589" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_03lllsu_di" bpmnElement="Activity_1m3k7g0">
-        <dc:Bounds x="1300" y="300" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0qwh4na_di" bpmnElement="Gateway_0qwh4na" isMarkerVisible="true">
-        <dc:Bounds x="1115" y="315" width="50" height="50" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0zce394_di" bpmnElement="Gateway_0zce394" isMarkerVisible="true">
         <dc:Bounds x="1115" y="205" width="50" height="50" />
       </bpmndi:BPMNShape>
@@ -158,11 +151,18 @@
         <di:waypoint x="1095" y="607" />
         <di:waypoint x="1167" y="607" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Event_0lc9dhl_di" bpmnElement="Event_1ktpn24">
-        <dc:Bounds x="542" y="549" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_03lllsu_di" bpmnElement="Activity_1m3k7g0">
+        <dc:Bounds x="1300" y="300" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0qwh4na_di" bpmnElement="Gateway_0qwh4na" isMarkerVisible="true">
+        <dc:Bounds x="1115" y="315" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0ndazcd_di" bpmnElement="Event_1nqbtp4">
         <dc:Bounds x="1122" y="489" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0lc9dhl_di" bpmnElement="Event_1ktpn24">
+        <dc:Bounds x="542" y="549" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1k5gacf_di" bpmnElement="Flow_1k5gacf">
         <di:waypoint x="215" y="607" />

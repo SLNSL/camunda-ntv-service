@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.ntv.dto.response.auth.AuthResponse;
 import ru.ntv.entity.users.TelegramUser;
 import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
