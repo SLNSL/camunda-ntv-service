@@ -9,9 +9,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import ru.ntv.entity.users.EmailUser;
 import ru.ntv.entity.users.TelegramUser;
 import ru.ntv.entity.users.User;
 import ru.ntv.etc.DatabaseRole;
+import ru.ntv.repo.EmailUserRepository;
 import ru.ntv.repo.RoleRepository;
 import ru.ntv.repo.TelegramUserRepository;
 import ru.ntv.repo.UserRepository;
@@ -33,6 +35,8 @@ public class SignUp implements JavaDelegate {
     AuthenticationManager authenticationManager;
     @Autowired
     JwtTokenProvider jwtUtils;
+    @Autowired
+    EmailUserRepository emailUserRepository;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
@@ -60,6 +64,9 @@ public class SignUp implements JavaDelegate {
         telegramUser.setTelegramName(telegramName);
         telegramUser.setUserId(user.getId());
         telegramUserRepository.save(telegramUser);
+
+        final var emailUser = new EmailUser(user.getId(), mail);
+        emailUserRepository.save(emailUser);
 
         // Sign in
         final var authentication = authenticationManager.authenticate(
